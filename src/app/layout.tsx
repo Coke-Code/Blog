@@ -1,8 +1,8 @@
 import './globals.css'
 
 export const metadata = {
-  title: '书里总爱写道喜出望外的傍晚 - wissbell',
-  description: '这里记录着一个开发者的成长，以及他的一些想法。',
+  title: '书里总爱写道喜出望外的傍晚 - 网上邻居',
+  description: '一个网络邻居记录他的一些想法。',
 }
 
 export default function RootLayout({

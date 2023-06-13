@@ -1,5 +1,7 @@
 # 博客
 
+ 简体中文 | [ENGLISH](https://github.com/Coke-Code/Blog/README.md)
+
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 
 一个简单的博客项目。

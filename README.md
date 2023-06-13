@@ -1,5 +1,7 @@
 # WissBell Blog
 
+ENGLISH | [简体中文](https://github.com/Coke-Code/Blog/README.zh-CN.md)
+
 [![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/Coke-Code/standard-readme)
 
 A simple blog project.

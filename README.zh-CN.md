@@ -88,7 +88,7 @@ $ pnpm lint
 ### 贡献者
 
 感谢以下参与项目的人：
-<a href="https://github.com/Coke-Code/standard-readme/graphs/contributors"><img src="https://opencollective.com/standard-readme/contributors.svg?width=890&button=false" /></a>
+<a href="https://github.com/Coke-Code/blog/graphs/contributors"><img src="https://opencollective.com/wissbellblog/contributors.svg?width=890&button=false" /></a>
 
 ## 开源协议
 

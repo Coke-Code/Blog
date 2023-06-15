@@ -20,17 +20,18 @@ export default async function ProjectsPage() {
     return acc
   }, {} as Record<string, number>)
 
-  const featured = allProjects.find((project) => project.slug)!
-  const top2 = allProjects.find((project) => project.slug)!
-  const top3 = allProjects.find((project) => project.slug)!
+  const hot = allProjects
+    .filter((project) => project.hot)!
+    .sort(
+      (a, b) =>
+        new Date(b.date ?? Number.POSITIVE_INFINITY).getTime() -
+        new Date(a.date ?? Number.POSITIVE_INFINITY).getTime()
+    )
+    .slice(0, 3)!
+  const [featured, top2, top3] = hot
   const sorted = allProjects
     .filter((p) => p.published)
-    .filter(
-      (project) =>
-        project.slug !== featured?.slug &&
-        project.slug !== top2?.slug &&
-        project.slug !== top3?.slug
-    )
+    .filter((project) => !hot.map((v) => v.slug).includes(project.slug))
     .sort(
       (a, b) =>
         new Date(b.date ?? Number.POSITIVE_INFINITY).getTime() -
@@ -40,7 +41,7 @@ export default async function ProjectsPage() {
   return (
     <div className="relative pb-16">
       <Navigation />
-      <div className="px-6 pt-16 mx-auto space-y-8 max-w-7xl lg:px-8 md:space-y-16 md:pt-24 lg:pt-32">
+      <div className="px-6 pt-20 mx-auto space-y-8 max-w-7xl lg:px-8 md:space-y-16 md:pt-24 lg:pt-32">
         <div className="max-w-2xl mx-auto lg:mx-0">
           <h2 className="text-3xl font-bold tracking-tight text-zinc-100 sm:text-4xl">
             博客

@@ -1,0 +1,526 @@
+---
+title: 'CSS从入门到出门'
+description: '基于《CSS权威指南》系统化学习CSS,涵盖了CSS盒模型、浏览器绘制基础、弹性盒、动画等常见CSS课题。'
+date: '2019-03-08'
+hot: false
+published: true
+---
+
+## 层叠优先级
+
+### 来源优先级
+
+1. 作者文档内联
+2. 作者浏览器设置（现在没有浏览器可以设置）
+3. 用户代理（浏览器默认）
+
+### 关联方式
+
+1. 文档内联（`style`标签）
+2. 文档外链(`link`引入)
+3. 行内（直接作用于标签的`style`属性）
+4. 相同样式表优先级书写越靠后，越晚加载的
+
+### a 标签的特殊层级
+
+1. `:link`
+2. `:hover`
+3. `:active`
+
+### 样式表优先级
+
+> 伪类选择器算一个`class`层级(如`:hover`)
+> 属性选择器算一个`class`层级(如[type="button"])
+> 通用选择器(`*`),和组合选择器(`>`,`+`,`~`)对优先级**没有影响**
+
+1. `!important`标记的
+2. `ID`选择器数量最多的
+3. `class`选择器最多的
+4. 标签名最多的
+
+## 值相关
+
+### css 中的长度单位
+
+#### 绝对单位
+
+- px 最常用的像素
+- mm 毫米
+- cm 厘米
+- in 英寸
+- pt 点
+- pc 派卡
+
+#### 字号相对单位
+
+- em 等于当前元素的字号
+- rem 等于根元素的字号
+
+> 陷阱：多级嵌套使用 em,因为没有理解 em 其计算规则。导致**梯度放大或缩小**的问题
+
+举个栗子：
+
+```css
+body {
+  font-size: 16px;
+}
+.parent {
+  font-size: 1.2em; /** 计算结果为16px * 1.2 = 19.2px */
+}
+.child {
+  font-size: 1.2em; /** 计算结果为19.2px * 1.2 = 23.04px */
+}
+.current {
+  font-size: 1.2em; /** 计算结果为19.2px * 1.2 = 27.648px */
+}
+```
+
+> 为什么说 em 是等于当前元素的字号？
+> 举个栗子
+
+```css
+body {
+  font-size: 16px;
+}
+.box {
+  font-size: 1.2em; /** 计算结果为16px * 1.2 = 19.2px */
+  padding: 1.2em; /** 计算结果为19.2px * 1.2 = 23.04px */
+}
+```
+
+你会发现`padding`的值并不是意料之中的`19.2px`,而是根据当前元素字号重新计算得到`23.04px`
+
+#### 视口相对单位
+
+- vh 视口高度的 1/100
+- vw 视口宽度的 1/100
+- vmin 视口宽、高中较小的一方的 1/100
+- vmax 视口宽、高中较大的乙方的 1/100
+
+#### 自定义属性
+
+自定义属性即`CSS变量`,它与 css 优先级一样，具有层叠属性。可以覆盖
+
+举个栗子：定义一个黑色变量
+
+```css
+:root {
+  --foreground: #000;
+}
+.description {
+  color: var(--foreground);
+}
+```
+
+## 盒模型
+
+修改属性`box-sizing`可以跳转盒模型的行为
+
+### W3C 标准盒模型
+
+默认情况或者手动将`box-sizing`的值指定为`content-box`
+
+> 盒子在视图的宽度 = width + padding-left + padding-right + border-left + border-right + margin-left + margin-right
+> 盒子在视图的高度 = height + padding-top + padding-bottom + border-top + border-bottom + margin-top + margin-bottom
+
+![W3C 标准盒模型](https://static.wissbell.com/wissbell/photos/content-box.png?imageMogr2/format/webp)
+
+### IE 盒模型
+
+将`box-sizing`的值指定为`border-box`
+
+> 盒子在视图的宽度 = width + padding-left + padding-right + border-left + border-right
+> 盒子在视图的高度 = height + padding-top + padding-bottom + border-top + border-bottom
+
+![W3C 标准盒模型](https://static.wissbell.com/wissbell/photos/border-box.png?imageMogr2/format/webp)
+
+### 负外边距
+
+不同于内边距和边框宽度，外边距可以设置为负值。
+外边距可以用于**让元素重叠或拉伸到比容器还宽**
+
+各个方向负外边距的行为：
+![负外边距](https://static.wissbell.com/wissbell/photos/negative-magin.png?imageMogr2/format/webp)
+
+### 外边距折叠
+
+当元素的顶部和/或底部的外边距相邻时，就会重叠，产生单个外边距。这种现象被称作折叠。**折叠外边距的大小等于相邻外边距中的最大值。**
+
+即使两个元素不是相邻的兄弟节点也会产生外边距折叠。有三个不同的外边距折叠到一块了：`<h2>`底部的外边距、`<div>`顶部
+的外边距、`<p>`顶部的外边距。
+
+```html
+<main class="main">
+  <h2>Come join us!</h2>
+  <div>
+    <p>
+      The Franklin Running club meets at 6:00pm every Thursday at the town
+      square. Runs are three to five miles, at your own pace.
+    </p>
+  </div>
+</main>
+```
+
+> 说明
+> 只有上下外边距会产生折叠，左右外边距不会折叠。
+>
+> 如何防止外边距折叠：
+
+- 对容器使用 overflow: auto（或者非 visible 的值），防止内部元素的外边距跟容器外部的外边距折叠。这种方式副作用最小。
+- 在两个外边距之间加上边框或者内边距，防止它们折叠。
+- 如果容器为浮动元素、内联块、绝对定位或固定定位时，外边距不会在它外面折叠。
+- 当使用 Flexbox 布局时，弹性布局内的元素之间不会发生外边距折叠。网格布局
+- 当元素显示为 table-cell 时不具备外边距属性，因此它们不会折叠。此外还有 table-row 和大部分其他表格显示类型，但不包括 table、table-inline、table-caption。
+
+## 布局
+
+### 浮动布局
+
+#### 浮动的设计初衷
+
+最初创造浮动并不是为了用于页面布局
+
+**浮动**能将一个元素（通常是一张图片）拉到其容器的一侧，这样文档流就能够包围它。这种文字环绕图片的展示方式，在报纸和杂志中很常见。
+
+在过去它是布局的唯一选择。后来，`display: inline-block` 和
+`display: table` 的问世才让我们有了别的方案，尽管二者可替代的场景有限。`Flexbox` 和`网格`
+布局最近几年才出现，在它们出现之前，浮动一直承担着页面布局的重任。
+
+#### 浮动的问题及解决方案
+
+##### 高度问题
+
+在容器中，如果子元素设置了浮动，那么子元素会脱离文档流，不再占据空间。这样就会导致父元素的高度塌陷，即父元素的高度为 0。
+
+解决方案：
+
+1. 给父元素设置高度
+2. 给父元素设置`overflow: hidden`或`overflow: auto`
+3. 最后一个子元素后添加一个空的`div`元素，设置`clear: both`
+4. 设置父元素的伪元素`::after`，设置`clear: both;content: "";display: table;`
+
+##### 布局问题
+
+浮动元素会尽可能的向上排列。因此可能会出现预料之外的布局情况，如图：
+
+![浮动元素布局问题](https://static.wissbell.com/wissbell/photos/float-problem.png?imageMogr2/format/webp)
+
+因为盒子 2 比盒子 1 矮，所以盒子 2 下方会有多余空间。而盒子 3 会尽可能向文档顶部排列。因此会跑到盒子 2 下方的空间中。
+
+解决方案：
+
+清除元素上方的浮动，给每个元素设置`:nth-child(odd){ clear:left }`，图中可知清除每个奇数元素上方浮动即可。
+
+##### BFC
+
+**块级格式化上下文**能开辟一块新的布局区域。它内部内容将于外部的上下文隔开。
+
+BFC 里的内容有如下特点：
+
+- 不会和外面的浮动元素重叠
+- 不会产生外边距折叠, 外边距不会影响父元素位置
+- 包含了内部所有浮动元素，高度不会塌陷
+
+下列情况会创建 BFC：
+
+- 根元素(html)
+- 浮动元素(元素的 float 值不是 none)
+- 绝对定位元素(元素的 position 为 absolute 或者 fixed)
+- 行内块元素(元素的 display 为 inline-block)
+- 表格单元格(元素的 display 为 table-cell，HTML 表格单元格默认为该值，表格标题(元素的 display 为 table-caption，HTML 表格
+- 标题默认为该值)row，tbody，thead，tfoot 的默认属性)或 inline-table)
+- overflow 计算值(Computed)不为 visible 的块元素
+- 弹性元素(display 为 flex 或 inline-flex 元素的直接子元素)
+- 网格元素(display 为 grid 或 inline-grid 元素的直接子元素)
+- display 值为 flow-root 的元素
+
+### FlexBox 布局
+
+`flexbox`是一种一维布局，只能在一个维度（横、纵）上处理元素布局。
+
+#### 轴线
+
+`flexbox`布局需要明白两个概念：主轴和交叉轴。主轴是指元素排列的方向，交叉轴是指元素排列的垂直方向。
+因为所有的属性都与这两个轴有关。
+
+##### 主轴
+
+主轴的方向定义由`flex-direction`属性决定，它有四个值：
+
+- row（默认值）：主轴为水平方向，起点在左端。
+- row-reverse：主轴为水平方向，起点在右端。
+- column：主轴为垂直方向，起点在上沿。
+- column-reverse：主轴为垂直方向，起点在下沿。
+
+##### 交叉轴
+
+交叉轴垂直于主轴：
+
+- 当`flex-direction`的值为`row`或`row-reverse`时，交叉轴就是沿着列向下的。
+- 当`flex-direction`的值为`column`或`column-reverse`时，交叉轴就是水平方向。
+
+#### Flex 容器
+
+当一个容器的`display`属性为`flex`或`inline-flex`时，该容器就成为了一个`flex`容器。
+
+容器中的直接子元素会变成**flex 元素**，这些子元素会有下列行为：
+
+- 元素排列为一行
+- 元素从主轴的起点开始排列
+- 元素不会再主轴线方向拉伸，但是可以缩小
+- 元素再交叉轴方向被拉伸以填充容器
+- `flex-basis`属性的默认值为`auto`，即元素的本来大小
+- `flex-wrap`属性为`nowrap`，即不换行
+
+下图会更直观：
+![弹性盒默认](https://static.wissbell.com/wissbell/photos/flex-box.png?imageMogr2/format/webp)
+
+##### 多行的 Flex 容器
+
+默认行为是不会换行的，子元素宽度超过父元素宽度时，子元素会被压缩，如果子元素无法再缩小，容器将会**溢出**。
+
+设置`flex-wrap`属性为`wrap`，可以让子元素换行。
+
+> TIPS
+>
+> `flex-flow`属性是`flex-direction`和`flex-wrap`的简写形式，其默认值为`row nowrap`。
+
+#### 控制 Flex 元素（Flex 容器直接子元素）
+
+为了更好的控制容器中每个子元素的排列规则，引入了`flex`属性，它是下拉属性的简写：
+
+- `flex-grow`：定义了元素在主轴方向上的放大比例，默认为 0，即不放大。
+- `flex-shrink`：定义了元素在主轴方向上的缩小比例，默认为 1，即如果空间不足，该元素将缩小。
+- `flex-basis`：定义了在分配多余空间之前，元素占据的主轴空间（main size），浏览器根据这个属性，计算主轴是否有多余空间。默认值为`auto`，即元素的本来大小。
+
+`flex`简写所代表的值：
+
+- `flex:inital`：`flex:0 1 auto`，即元素不放大，可以收缩。
+- `flex:auto`：`flex:1 1 auto`，即元素放大，也缩小。
+- `flex:none`：`flex:0 0 auto`，等同于`flex:0 0 auto`, 不能拉伸也不能收缩。
+- `flex:1`：`flex:1 1 0%`，在`flex-basis`为 0 的基础上伸缩。
+
+#### 元素之间的对齐和空间分配
+
+##### align-items
+
+元素在交叉轴上的对齐方式。
+
+- `stretch`（默认值）：元素被拉伸以填充整个容器。
+- `flex-start`：元素在交叉轴的起点对齐。
+- `flex-end`：元素在交叉轴的终点对齐。
+- `center`：元素在交叉轴的中点对齐。
+
+##### justify-content
+
+主轴方向的对齐方式
+
+- `flex-start`：元素在主轴的起点对齐。
+- `flex-end`：元素在主轴的终点对齐。
+- `center`：元素在主轴的中点对齐。
+- `space-between`：元素之间的间隔都相等。
+- `space-around`：元素周围的间隔都相等。所以，元素之间的间隔比元素与边框的间隔大一倍。
+
+### Grid 布局
+
+`grid`布局是一种二维网格布局系统。网格是一组香蕉的水平线和垂直线。它定义了网格的列和行，因此可以将网格元素放置在这些行和列相关的位置上。
+
+## 层叠上下文
+
+### 层叠上下文的概念
+
+在 CSS2.1 规范中，每个盒模型的位置是三维的，分别是平面画布上的 x 轴，y 轴以及表示层叠的 z 轴。层叠上下文即元素在某个层级上 z 轴方向的排列关系。
+
+### 形成成蝶上下文的条件
+
+- 根元素 `<html></html>`
+- `position`值为 `absolute|relative`，且 `z-index`值不为 auto
+- `position` 值为 `fixed|sticky`
+- `z-index` 值不为 auto 的 flex 元素，即：父元素 `display:flex|inline-flex`
+- `opacity` 属性值小于 1 的元素
+- `transform` 属性值不为 none 的元素
+- `mix-blend-mode` 属性值不为 normal 的元素
+- `filter、` `perspective、` `clip-path`、 `mask、` `mask-image、` `mask-border、` `motion-path` 值不为 none 的元素
+- `perspective` 值不为 none 的元素
+- `isolation` 属性被设置为 isolate 的元素
+- `will-change` 中指定了任意 CSS 属性，即便你没有直接指定这些属性的值
+- `-webkit-overflow-scrolling` 属性被设置 touch 的元素
+
+### 层叠顺序
+
+![层叠顺序概览](https://static.wissbell.com/wissbell/photos/stacking-level.png?imageMogr2/format/webp)
+
+将浏览器视图想象成一个三维空间，视图会按照层叠顺序从小到大依次渲染。层叠优先级越高的出现在约靠近用户视觉的方向。因此，层叠顺序越高的元素会覆盖层叠顺序低的元素。
+
+![层叠顺序说明](https://static.wissbell.com/wissbell/photos/stacking-order.png?imageMogr2/format/webp)
+
+## 响应式
+
+### 媒体查询方案
+
+媒体查询方案就是对设备按照某些条件（分辨率、DPI 等）进行查询。在特定条件下，应用不同的样式。
+
+关于断点的方案有许多，可以参考使用最广泛的[Bootstrap](https://getbootstrap.com/docs/4.0/layout/overview/)的断点方案。
+
+举个简单栗子：
+
+```css
+@media (min-width: 768px) {
+  /* >=768的设备 */
+}
+@media (min-width: 992px) {
+  /* >=992的设备 */
+}
+@media (min-width: 1200px) {
+  /* >=1200的设备 */
+}
+```
+
+### 相对单位方案
+
+相对单位方案一般是结合响应式方案使用，用于更小粒度控制元素属性。
+
+#### 百分比
+
+比较广泛的应用是栅格系统，比如 Bootstrap 的栅格系统。
+
+#### vw/vh
+
+`vw`和`vh`是相对于视口的宽度和高度来计算的。但是完全依赖窗口大小来实现响应式，会有一些问题：
+
+- 视口过大过小导致单位过大或过小
+- 在精准控制方面不够灵活
+
+因此此方案一般结合其他相对单位一起使用。
+
+#### REM
+
+`rem`单位都是相对于**根元素 html**的字体大小来计算的。因此，可以通过设置根元素的字体大小来控制页面的缩放。
+
+`rem`布局需要结合`JavaScript`动态修改根元素的字体大小。
+
+#### EM
+
+`em`根据**所在元素当前的字号**进行计算。因此，它在用于外边距，内边距等属性时，具有天然的自洽性。但由于`em`单位的计算不被大多数人掌握，因此实际开发中`em`单位的使用并不多。
+
+### 图片方案
+
+#### 使用 srcset
+
+根据屏幕 DPI 选择加载几倍图：
+
+```html
+<img
+  srcset="photo_w350.jpg 1x, photo_w640.jpg 2x"
+  src="photo_w350.jpg"
+  alt=""
+/>
+```
+
+#### 使用 picture
+
+根据媒体查询条件加载对应资源：
+
+```html
+<picture>
+  <source srcset="banner_w1000.jpg" media="(min-width: 801px)" />
+  <source srcset="banner_w800.jpg" media="(max-width: 800px)" />
+  <img src="banner_w800.jpg" alt="" />
+</picture>
+```
+
+## 范式
+
+常见的 CSS 范式有：
+
+- OOCSS
+- BEM
+- SMACSS
+- ACSS
+
+直接上结论：
+
+- 涉及频繁调整的 C 端，活动营销类页面使用基于原子范式的`tailwindcss`
+- SaaS 类项目、或者要求高统一视觉方案、统一组件的项目使用 BEM 范式进行自主迭代
+
+### 原子范式
+
+> Tailwind CSS 致命吐槽
+> “最佳实践”实际上并不起作用。
+>
+> 曾几何时，我想当厌恶将 CSS 原子化，写类名如写类联的方式。诸如`.di { display: inline }` `.fl { float: left }`，
+
+但是当我经过多个项目的迭代实践。所谓的“最佳实践”在不断迭代的设计规范中，不断被踩在地上摩擦，我不得不得将原来基于 BEM 或者 OOCSS 方式的块拆解再组合，细分在编码。`CSS`编码的文件也**大于**原子类编码的体积。
+
+如 TailWind 官网上的吐槽一样，原子范式真好用(C 端及营销页)。
+
+### BEM
+
+[BEM 层叠样式](https://bem-cheat-sheet.9elements.com/#form-blocks)
+
+> block element modifier，即「区块 元素 状态」
+
+BEM 约定了一套类命名的规则：{区块名}\_\_{元素名}--{状态名}
+
+例如 TABS 组件的命名：
+![TABS BEM命名](https://static.wissbell.com/wissbell/photos/bem-tabs.png?imageMogr2/format/webp)
+
+## 动画
+
+### 关键帧
+
+使用`@keyframes`定义关键帧动画。后面紧跟动画名称，然后是一组百分比和样式的键值对。
+
+下面设置了一个名字为`wider`的动画，从`100px`宽度变化到`200px`宽度。
+
+```css
+.box {
+  animation: wider 1s;
+}
+@keyframes wider {
+  0% {
+    width: 100px;
+  }
+
+  100% {
+    width: 200px;
+  }
+}
+```
+
+动画的变化节点可以使用`from`和`to`来代替`0%`和`100%`。百分比是可以在合法值范围使用任意次数的。
+
+### 动画属性
+
+`animation`支持简写属性
+
+animation: name duration timing-function delay iteration-count direction fill-mode play-state;
+
+具体属性如下：
+| 属性 | 描述 |
+| ------------ | ------------------- |
+| animation-name | 动画关键帧名称 |
+| animation-duration | 动画完成一个周期的时间 |
+| animation-timing-function | 一个周期动画如何调度 |
+| animation-delay | 动画何时开始执行 |
+| animation-iteration-count | 动画被播放次数 |
+| animation-direction | 动画帧播放的顺序 |
+| animation-play-state | 规定动画是否正在运行，正在运行`running`（默认）或暂停`paused` |
+| animation-fill-mode | 规定动画结束后的状态，保持`forwards`（默认）或回到初始`backwards` |
+
+#### 动画的调度方式
+
+`animation-timing-function`定义了动画帧的一个周期的调度方式
+
+**注意：**它定义的是一个周期内**关键帧之间**的缓动函数
+
+其支持的属性如下：
+| 值 | 描述 |
+| ------------ | ------------------- |
+| linear | 动画关键帧名称 |
+| ease | 动画从头到尾的速度是相同的。 |
+| ease-in | 动画以低速开始 |
+| ease-out | 动画以低速结束 |
+| ease-in-out | 动画以低速开始和结束 |
+| steps(int,start|end) | 步进方式执行一个动画周期，第一个参数是一个正整数，代表多少步。第二个参数，`start`标表示直接开始，`end`表示戛然而止，默认值 |
+| cubic-bezier(n,n,n,n) | 在 cubic-bezier 函数中自己的值。可能的值是从 0 到 1 的数值。 |

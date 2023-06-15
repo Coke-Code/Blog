@@ -31,6 +31,7 @@ export type Project = {
   description: string
   date?: IsoDateTimeString | undefined
   url?: string | undefined
+  hot?: boolean | undefined
   repository?: string | undefined
   /** MDX file body */
   body: MDX

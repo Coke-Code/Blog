@@ -36,6 +36,9 @@ var Project = defineDocumentType(() => ({
     url: {
       type: "string"
     },
+    hot: {
+      type: "boolean"
+    },
     repository: {
       type: "string"
     }
@@ -98,4 +101,4 @@ export {
   Project,
   contentlayer_config_default as default
 };
-//# sourceMappingURL=compiled-contentlayer-config-GYSND7JI.mjs.map
+//# sourceMappingURL=compiled-contentlayer-config-YKOVSAKY.mjs.map

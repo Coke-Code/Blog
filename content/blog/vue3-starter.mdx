@@ -1,0 +1,1459 @@
+---
+title: 'Vue3入门指北'
+description: 'Vue.js 3.x 入门教程，介绍了常用Api使用方法及常见开发场景。'
+date: '2021-06-10'
+hot: false
+published: true
+---
+
+本文默认读者有过`Vue.js 2.x`的开发基础，因此入门不再不过多讨论细枝末节，附[Vuejs 官方文档](https://cn.vuejs.org/guide/introduction.html)
+
+## 基础
+
+### 使用方式
+
+不涉及构建，`script`直接引入
+
+```html
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+<div id="app">{{ message }}</div>
+
+<script>
+  const { createApp } = Vue
+
+  createApp({
+    data() {
+      return {
+        message: 'Hello Vue!',
+      }
+    },
+  }).mount('#app')
+</script>
+```
+
+使用构建版本
+
+```bash
+npm i vue@latest
+```
+
+### API 风格
+
+#### 选项式 API，兼容 Vue2 写法的风格
+
+选项所定义的属性都会暴露在函数内部的 this 上，它会指向当前的组件实例。
+
+**选项式 API 可以通过`__VUE_OPTIONS_API__`环境变量控制开启还是关闭**
+
+```html
+<script>
+  export default {
+    data() {
+      return {
+        count: 0,
+      }
+    },
+    methods: {
+      increment() {
+        this.count++
+      },
+    },
+    mounted() {
+      console.log(`The initial count is ${this.count}.`)
+    },
+  }
+</script>
+
+<template>
+  <button @click="increment">Count is: {{ count }}</button>
+</template>
+```
+
+#### 组合式 API，Vue3 新风格
+
+导入的 API 函数来描述组件逻辑
+
+```html
+<script setup>
+  import { ref, onMounted } from 'vue'
+
+  const count = ref(0)
+
+  function increment() {
+    count.value++
+  }
+
+  onMounted(() => {
+    console.log(`The initial count is ${count.value}.`)
+  })
+</script>
+
+<template>
+  <button @click="increment">Count is: {{ count }}</button>
+</template>
+```
+
+**注意：**
+`script setup`仅作为一种语法糖作用同下
+
+```html
+<script>
+  import { ref, onMounted } from 'vue'
+
+  export default {
+    setup() {
+      const count = ref(0)
+
+      function increment() {
+        count.value++
+      }
+
+      onMounted(() => {
+        console.log(`The initial count is ${count.value}.`)
+      })
+
+      return {
+        count,
+        increment,
+      }
+    },
+  }
+</script>
+
+<template>
+  <button @click="increment">Count is: {{ count }}</button>
+</template>
+```
+
+#### 模板语法
+
+模板语法没什么变化
+
+```html
+<!-- 插值 -->
+<span>Message: {{ msg }}</span>
+
+<!-- 原始html -->
+<p>
+  Using v-html directive:
+  <span v-html="rawHtml"></span>
+</p>
+
+<!-- 动态绑定值 -->
+<div v-bind:id="dynamicId"></div>
+<div :id="dynamicId"></div>
+<button :disabled="isButtonDisabled">Button</button>
+<div v-bind="{ id: 'container', class: 'wrapper'}"></div>
+<div :class="{ 'container': true, 'container--xl': isXLarge}"></div>
+<div :style="{ color: activeColor, fontSize: fontSize + 'px' }"></div>
+<div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }"></div>
+
+<!-- 表达式 -->
+{{ number + 1 }} {{ ok ? 'YES' : 'NO' }} {{ message.split('').reverse().join('')
+}}
+<div :id="`list-${id}`"></div>
+
+<!-- 调用函数 -->
+<span :title="toTitleDate(date)">{{ formatDate(date) }}</span>
+
+<!-- 动态参数 -->
+<a v-bind:[attributeName]="url">...</a>
+<a :[attributeName]="url">...</a>
+
+<!-- 动态事件绑定 -->
+<a v-on:[eventName]="doSomething">...</a>
+<a @[eventName]="doSomething">
+  <!-- 修饰符 -->
+  <form @submit.prevent="onSubmit">...</form>
+
+  <!-- 条件渲染 -->
+  <h1 v-if="msg === 'awesome'">Vue is awesome!</h1>
+  <h1 v-else-if="msg === 'epic'">Vue is epic~</h1>
+  <h1 v-else>Oh no 😢</h1>
+
+  <!-- 批量条件渲染 -->
+  <template v-if="ok">
+    <h1>Title</h1>
+    <p>Paragraph 1</p>
+    <p>Paragraph 2</p>
+  </template>
+
+  <!-- 展示隐藏 -->
+  <h1 v-show="ok">Hello!</h1>
+
+  <!-- 渲染列表 -->
+  <MyComponent v-for="item in items" :key="item.id" />
+</a>
+```
+
+#### 生命周期
+
+Vue3 兼容所有 Vue2 生命周期，`setup`会在所有生命周期之前执行
+
+![vue3生命周期](https://static.wissbell.com/wissbell/photos/vue-lifecycle.png?imageMogr2/format/webp)
+
+#### watch 的变动
+
+vue3 watch 增加了回调的触发时机，`flush`可选值为'pre' | 'post' | 'sync'。
+
+如果想在侦听器回调中能访问被 Vue 更新之后的 DOM，你需要指明 flush: 'post' 选项：
+
+```javascript
+export default {
+  // ...
+  watch: {
+    key: {
+      handler() {},
+      flush: 'post',
+    },
+  },
+}
+```
+
+## 组件
+
+### 组件注册
+
+#### 全局注册
+
+使用 Vue 应用实例的 app.component() 方法，让组件在当前 Vue 应用中全局可用。
+
+```javascript
+import MyComponent from './App.vue'
+
+app.component('MyComponent', MyComponent)
+```
+
+#### 局部注册
+
+局部注册的组件需要在使用它的父组件中显式导入，并且只能在该父组件中使用,它的优点是**使组件之间的依赖关系更加明确，并且对 tree-shaking 更加友好**。
+
+```html
+<script>
+  import ComponentA from './ComponentA.vue'
+
+  export default {
+    components: {
+      ComponentA,
+    },
+  }
+</script>
+
+<template>
+  <ComponentA />
+</template>
+```
+
+### 组件事件
+
+#### 事件触发
+
+在组件的模板表达式中，可以直接使用 $emit 方法触发自定义事件。组件可以显式地通过 emits 选项来声明它要触发的事件。
+
+> 尽管事件声明是可选的，事件声明能让 Vue 更好地将事件和透传 attribute 作出区分。
+> 从而避免一些由第三方代码触发的自定义 DOM 事件所导致的边界情况。
+
+```html
+<button @click="$emit('someEvent')">click me</button>
+
+<script>
+  export default {
+   emits: ['someEvent']
+    methods: {
+      submit() {
+        this.$emit('someEvent')
+      }
+    }
+  }
+</script>
+```
+
+父组件可以通过 v-on (缩写为 @) 来监听事件：
+
+```html
+<MyComponent @some-event="callback" />
+```
+
+#### 事件校验
+
+触发的事件也可以使用对象形式来描述。返回一个**布尔值**来表明事件是否合法。
+
+```javascript
+export default {
+  emits: {
+    // 没有校验
+    click: null,
+
+    // 校验 submit 事件
+    submit: ({ email, password }) => {
+      if (email && password) {
+        return true
+      } else {
+        console.warn('Invalid submit event payload!')
+        return false
+      }
+    },
+  },
+  methods: {
+    submitForm(email, password) {
+      this.$emit('submit', { email, password })
+    },
+  },
+}
+```
+
+### 异步组件
+
+在大型项目中，我们可能需要拆分应用为更小的块，并仅在需要时再从服务器加载相关组件。Vue 提供了 defineAsyncComponent 方法来实现此功能。
+
+#### 基础使用
+
+```javascript
+import { defineAsyncComponent } from 'vue'
+
+const AsyncComp = defineAsyncComponent(() => {
+  return new Promise((resolve, reject) => {
+    // ...从服务器获取组件
+    resolve(/* 获取到的组件 */)
+  })
+})
+
+const AsyncCompAnother = defineAsyncComponent(() =>
+  import('./components/MyComponent.vue')
+)
+// ... 像使用其他一般组件一样使用 `AsyncComp`
+```
+
+仅在页面需要它渲染时才会调用加载内部实际组件的函数，而且：
+
+- 与普通组件一样，异步组件可以使用 app.component() 全局注册
+- 你也可以在局部注册组件时使用 defineAsyncComponent
+- 异步组件可以搭配内置的 \<Suspense\> 组件一起使用
+
+#### 加载与错误状态
+
+异步操作不可避免地会涉及到加载和错误状态，因此 defineAsyncComponent() 也支持在高级选项中处理这些状态：
+
+```javascript
+const AsyncComp = defineAsyncComponent({
+  // 加载函数
+  loader: () => import('./Foo.vue'),
+
+  // 加载异步组件时使用的组件
+  loadingComponent: LoadingComponent,
+  // 展示加载组件前的延迟时间，默认为 200ms
+  delay: 200,
+
+  // 加载失败后展示的组件
+  errorComponent: ErrorComponent,
+  // 如果提供了一个 timeout 时间限制，并超时了
+  // 也会显示这里配置的报错组件，默认值是：Infinity
+  timeout: 3000,
+})
+```
+
+## 组合式函数
+
+### 基础用法
+
+“组合式函数”(Composables) 是一个利用 Vue 的组合式 API 来封装和复用有状态逻辑的函数。是 Vue3 最大的特性之一，提供了更优雅的代码组织能力。
+
+假如我们的项目中有多个组件页面用到**鼠标当前坐标的值**，使用组合式 API 实现鼠标跟踪功能：
+
+```javascript
+// mouse.js
+import { ref, onMounted, onUnmounted } from 'vue'
+
+// 按照惯例，组合式函数名以“use”开头
+export function useMouse() {
+  // 被组合式函数封装和管理的状态
+  const x = ref(0)
+  const y = ref(0)
+
+  // 组合式函数可以随时更改其状态。
+  function update(event) {
+    x.value = event.pageX
+    y.value = event.pageY
+  }
+
+  // 一个组合式函数也可以挂靠在所属组件的生命周期上
+  // 来启动和卸载副作用
+  onMounted(() => window.addEventListener('mousemove', update))
+  onUnmounted(() => window.removeEventListener('mousemove', update))
+
+  // 通过返回值暴露所管理的状态
+  return { x, y }
+}
+```
+
+在其他页面或组件中的使用方式：
+
+```html
+<script setup>
+  import { useMouse } from './mouse.js'
+
+  const { x, y } = useMouse()
+</script>
+
+<template>Mouse position is at: {{ x }}, {{ y }}</template>
+```
+
+> TIPS
+>
+> 每一个调用 useMouse() 的组件实例会创建其独有的 x、y 状态拷贝，因此他们不会互相影响。
+> 此外组合式 API 可以运用绝大多数 Vue3 API，如 Watch、Computed。以及生命周期钩子
+> 组合式函数约定用驼峰命名法命名，并以“use”作为开头。
+
+### 与其他复用方式对比
+
+#### Mixin
+
+mixins 有三个主要的短板：
+
+1. 不清晰的数据来源：当使用了多个 mixin 时，实例上的数据属性来自哪个 mixin 变得不清晰，这使追溯实现和理解组件行为变得困难。这也是我们推荐在组合式函数中使用 ref + 解构模式的理由：让属性的来源在消费组件时一目了然。
+2. 命名空间冲突：多个来自不同作者的 mixin 可能会注册相同的属性名，造成命名冲突。若使用组合式函数，你可以通过在解构变量时对变量进行重命名来避免相同的键名。
+3. 隐式的跨 mixin 交流：多个 mixin 需要依赖共享的属性名来进行相互作用，这使得它们隐性地耦合在一起。而一个组合式函数的返回值可以作为另一个组合式函数的参数被传入，像普通函数那样。
+
+#### 容器组件（无渲染内容的组件）
+
+- 组合式函数相对于无渲染组件的主要优势是：组合式函数不会产生额外的组件实例开销。当在整个应用中使用时，由无渲染组件产生的额外组件实例会带来无法忽视的性能开销。
+- 但是当我们存在视图与逻辑复用。如广告容器等场景，无渲染组件可能更合适
+
+## 内置组件
+
+- Transition 用于元素过渡和动画
+- TransitionGroup 用于对 v-for 列表中的元素或组件的插入、移除和顺序改变添加动画效果
+- KeepAlive 多个组件间动态切换时缓存被移除的组件实例
+- Teleport 将一个组件内部的一部分模板“传送”到该组件的 DOM 结构外层的位置去。封装模态等
+- Suspense 在组件树中协调对异步依赖的处理，异步加载组件等待时渲染一个加载状态
+
+## 组合式 API
+
+### setup()
+
+setup() 钩子是在组件中使用组合式 API 的入口，通常只在以下情况下使用：
+
+1. 需要在非单文件组件中使用组合式 API 时
+2. 需要在基于选项式 API 的组件中集成基于组合式 API 的代码时。
+
+> 官方最佳实践
+> 对于结合单文件组件(\*.vue)使用的组合式 API，推荐通过 \<script setup\> 以获得更加简洁及符合人体工程学的语法。
+
+#### 访问 props
+
+setup 函数的第一个参数是组件的 props。
+
+```javascript
+export default {
+  props: {
+    title: String,
+  },
+  setup(props) {
+    console.log(props.title)
+  },
+}
+```
+
+#### Setup 上下文
+
+传入 setup 函数的第二个参数是一个 Setup 上下文对象。
+
+```javascript
+export default {
+  setup(props, context) {
+    // 透传 Attributes（非响应式的对象，等价于 $attrs）
+    console.log(context.attrs)
+
+    // 插槽（非响应式的对象，等价于 $slots）
+    console.log(context.slots)
+
+    // 触发事件（函数，等价于 $emit）
+    console.log(context.emit)
+
+    // 暴露公共属性（函数）
+    console.log(context.expose)
+  },
+}
+```
+
+> 陷阱
+> props 是响应式的，如果直接解构会丢失响应式
+> context 是非响应式的，可以安全的解构
+
+#### 向外暴露
+
+expose 函数用于显式地限制该组件暴露出的属性，当父组件通过模板引用访问该组件的实例时，将仅能访问 expose 函数暴露出的内容：
+
+```javascript
+export default {
+  setup(props, { expose }) {
+    // 让组件实例处于 “关闭状态”
+    // 即不向父组件暴露任何东西
+    expose()
+
+    const publicCount = ref(0)
+    const privateCount = ref(0)
+    // 有选择地暴露局部状态,父级能通过this.$refs.child访问publicCount
+    expose({ count: publicCount })
+  },
+}
+```
+
+#### 与渲染函数一起使用
+
+setup 也可以返回一个渲染函数，不使用模板
+
+```javascript
+import { h, ref } from 'vue'
+
+export default {
+  setup() {
+    const count = ref(0)
+    return () => h('div', count.value)
+  },
+}
+```
+
+这种情况如果我们需要返回其他值，供外部调用或使用，可以用上文提到的`expose()`:
+
+```javascript
+import { h, ref } from 'vue'
+
+export default {
+  setup(props, { expose }) {
+    const count = ref(0)
+    const increment = () => ++count.value
+
+    expose({
+      increment,
+    })
+
+    return () => h('div', count.value)
+  },
+}
+```
+
+### 响应式 API
+
+在 Vue 3 中，数据是基于 javascript Proxy（代理） 实现响应式的。
+与 Vue 2 不同的是，这里原始的 newObject 不会变为响应式：请确保始终通过 this 来访问响应式状态。
+
+```javascript
+export default {
+  data() {
+    return {
+      someObject: {},
+    }
+  },
+  mounted() {
+    const newObject = {}
+    this.someObject = newObject // 在Vue2中newObject会被递归使用属性定义读写器变成响应式
+
+    console.log(newObject === this.someObject) // false
+  },
+}
+```
+
+> TIPS
+>
+> 同个`宏任务`中，每个组件都只更新一次,当你多次更改响应式状态后,每个组件都只更新一次
+> 响应式状态默认是深层次的
+> 组件使用`Lodash`或`Rxjs`时，应该留意每个组件的第三方库状态是**单例**，例如不能直接给方法绑定防抖，改为在`created`生命周期中创建这个防抖的函数
+
+#### ref()
+
+接受一个内部值，返回一个响应式的、可更改的 ref 对象，此对象只有一个指向其内部值的属性 .value。
+
+- 如果内部值是一个基础值，基础值通过`.value`读写，且操作都将被追踪
+- 如果内部值是一个对象，这个对象的值`.value`将通过`reactive()`转换为具有深层次响应式的对象
+
+#### computed()
+
+接受一个 getter 函数，返回一个只读的响应式 ref 对象。
+
+- 通过`.value`暴露的`getter`取值
+- 可以设置`get`和`set`创建一个可读写的具备缓存值的对象
+
+#### reactive()
+
+返回一个对象的响应式代理。
+
+- 默认是深层响应式
+- 返回的对象及嵌套对象都通过`Proxy`包裹，因此不影响源对象
+- 将`ref`赋值给`reactive`属性时，`ref会自动解包`
+
+```javascript
+const count = ref(1)
+const obj = reactive({})
+
+obj.count = count
+
+console.log(obj.count) // 1
+console.log(obj.count === count.value) // true
+```
+
+#### readonly()
+
+接受一个对象 (不论是响应式还是普通的) 或是一个 ref，返回一个原值的只读代理。
+
+- 默认深层次的，因此任何嵌套对象访问都是只读的
+
+#### shallowRef()
+
+`ref()` 的浅层作用形式。
+
+`ref()`参数为对象时其值`.value`会交给`reactive()`深度代理，和 `ref()` 不同，浅层 ref 的内部值将会原样存储和暴露，并且不会被深层递归地转为响应式。只有对 `.value` 的访问是响应式的。
+
+#### triggerRef()
+
+强制触发依赖于一个浅层 ref 的副作用，这通常在对浅引用的内部值进行深度变更后使用。
+
+#### customRef()
+
+创建一个自定义的 ref，显式声明对其依赖追踪和更新触发的控制方式。
+
+```typescript
+function customRef<T>(factory: CustomRefFactory<T>): Ref<T>
+
+type CustomRefFactory<T> = (
+  track: () => void,
+  trigger: () => void
+) => {
+  get: () => T
+  set: (value: T) => void
+}
+```
+
+一般来说，track() 应该在 get() 方法中调用，而 trigger() 应该在 set() 中调用。然而事实上，你对何时调用、是否应该调用他们有完全的控制权。
+
+#### shallowReactive()
+
+`reactive()` 的浅层作用形式。不会进行深度代理
+和 `reactive()` 不同，这里没有深层级的转换
+
+#### shallowReadonly()
+
+`readonly()` 的浅层作用形式
+和 `reactive()` 不同，这里没有深层级的转换
+
+#### toRaw()
+
+根据一个 Vue 创建的代理返回其原始对象。
+
+```javascript
+const foo = {}
+const reactiveFoo = reactive(foo)
+
+console.log(toRaw(reactiveFoo) === foo) // true
+```
+
+#### markRaw()
+
+将一个对象标记为不可被转为代理。返回该对象本身。**这意味着使用 markRaw()包裹的对象或值，无法被转换成响应式**
+
+```javascript
+const foo = markRaw({})
+console.log(isReactive(reactive(foo))) // false
+
+// 也适用于嵌套在其他响应性对象
+const bar = reactive({ foo })
+console.log(isReactive(bar.foo)) // false
+```
+
+#### watchEffect()
+
+```typescript
+function watchEffect(
+  effect: (onCleanup: OnCleanup) => void,
+  options?: WatchEffectOptions
+): StopHandle
+
+type OnCleanup = (cleanupFn: () => void) => void
+
+interface WatchEffectOptions {
+  flush?: 'pre' | 'post' | 'sync' // 默认：'pre'
+  onTrack?: (event: DebuggerEvent) => void
+  onTrigger?: (event: DebuggerEvent) => void
+}
+
+type StopHandle = () => void
+```
+
+立即运行一个函数，同时响应式地追踪其依赖，并在依赖更改时重新执行。
+
+- 第一个参数是需要运行的副作用函数（回调）
+- 第二个参数是可选项，用来调整回调的执行实践或调试副作用的依赖
+
+#### watchPostEffect()
+
+`watchEffect()`的`options`使用`flush:'post'`选项时的别名
+
+#### watchSyncEffect()
+
+`watchEffect()`的`options`使用`flush:'sync'`选项时的别名
+
+#### watch()
+
+侦听一个或多个响应式数据源，并在数据源变化时调用所给的回调函数。
+`watch()`仅在侦听源发生变化时才执行回调函数。
+
+第一个参数是侦听器的**源**：可以是下列值：
+
+- 函数且返回一个值
+- ref
+- 响应式对象
+- 由以上类型的值组成的数组
+
+第二个参数：
+
+- 侦听**源**发送变化时的回调
+- 接受三个参数：新值、旧值、注册副作用清理的回调函数。该回调函数会在副作用下一次重新执行前调用，可以用来清除无效的副作用，例如等待中的异步请求。
+
+第三个参数：
+
+- `immediate` 侦听器创建时立即触发
+- `deep` 强制深度遍历
+- `flush` 回调函数刷新时机，同`watchEffect`
+- `ontrack/ontrigger` 调试侦听器依赖
+
+> 与`watch()`差异：
+
+- 懒执行副作用
+- 明确哪个状态触发侦听器执行
+- 可以获取侦听**源**的旧值和新值
+
+#### effectScope()
+
+创建一个 effect 作用域，可以捕获其中所创建的响应式副作用 (即计算属性和侦听器)，这样捕获到的副作用可以一起处理。
+具体用法[effectScope RFC](https://github.com/vuejs/rfcs/blob/master/active-rfcs/0041-reactivity-effect-scope.md)
+
+```javascript
+const scope = effectScope()
+
+scope.run(() => {
+  const doubled = computed(() => counter.value * 2)
+
+  watch(doubled, () => console.log(doubled.value))
+
+  watchEffect(() => console.log('Count: ', doubled.value))
+})
+
+// 处理掉当前作用域内的所有 effect
+scope.stop()
+```
+
+#### getCurrentScope()
+
+如果有的话，返回当前活跃的 `effect` 作用域。
+
+#### onScopeDispose()
+
+在当前活跃的 `effect` 作用域上注册一个处理回调函数。当相关的 effect 作用域停止时会调用这个回调函数。
+
+### 响应式数据工具函数
+
+#### isRef()
+
+检查某个值是否为 ref。
+
+#### unref()
+
+如果参数是 ref，则返回内部值，否则返回参数本身。这是 val = isRef(val) ? val.value : val 计算的一个语法糖。
+
+#### toRef()
+
+基于响应式对象上的一个属性，创建一个对应的 ref
+
+```javascript
+const state = reactive({
+  foo: 1,
+  bar: 2,
+})
+
+const fooRef = toRef(state, 'foo')
+
+// 更改该 ref 会更新源属性
+fooRef.value++
+console.log(state.foo) // 2
+
+// 更改源属性也会更新该 ref
+state.foo++
+console.log(fooRef.value) // 3
+```
+
+#### toRefs()
+
+将一个响应式对象转换为一个普通对象，这个普通对象的每个属性都是指向源对象相应属性的 ref。每个单独的 ref 都是使用 toRef() 创建的。
+
+```javascript
+const state = reactive({
+  foo: 1,
+  bar: 2,
+})
+
+const stateAsRefs = toRefs(state)
+/*
+stateAsRefs 的类型：{
+  foo: Ref<number>,
+  bar: Ref<number>
+}
+*/
+
+// 这个 ref 和源属性已经“链接上了”
+state.foo++
+console.log(stateAsRefs.foo.value) // 2
+
+stateAsRefs.foo.value++
+console.log(state.foo) // 3
+```
+
+#### isProxy()
+
+检查一个对象是否是由 `reactive()`、`readonly()`、`shallowReactive()` 或 `shallowReadonly()` 创建的代理。
+
+#### isReactive()
+
+检查一个对象是否是由 `reactive()` 或 `shallowReactive()` 创建的代理。
+
+#### isReadonly()
+
+检查传入的值是否为只读对象。只读对象的属性可以更改，但他们不能通过传入的对象直接赋值。
+
+通过 `readonly()` 和 `shallowReadonly()` 创建的代理都是只读的，因为他们是没有 `set` 函数的 `computed()` ref。
+
+### 生命周期钩子
+
+> 注意！！！！
+> 所有罗列在本页的 API 都应该在组件的 setup() 阶段被同步调用。
+
+#### onMounted()
+
+注册一个回调函数，在组件挂载完成后执行。
+
+对于挂载的解释：
+
+1. 其所有同步子组件都已经被挂载 (不包含异步组件或 \<Suspense\> 树内的组件)。
+2. 其自身的 DOM 树已经创建完成并插入了父容器中。注意仅当根容器在文档中时，才可以保证组件 DOM 树也在文档中。
+
+**这个钩子在服务器端渲染期间不会被调用。**
+
+#### onUpdated()
+
+注册一个回调函数，在组件因为响应式状态变更而更新其 DOM 树之后调用。
+
+> TIPS
+>
+> 父组件的更新钩子将在其子组件的更新钩子之后调用。
+> 不要在 updated 钩子中更改组件的状态，这可能会导致无限的更新循环！
+> 对于想获取特定状态逻辑引起的 DOM 变化，推荐使用`nextTick()`
+
+**这个钩子在服务器端渲染期间不会被调用。**
+
+#### onUnmounted()
+
+注册一个回调函数，在组件实例被卸载之后调用。
+
+对于已卸载的解释：
+
+- 其所有子组件都已经被卸载。
+- 所有相关的响应式作用 (渲染作用以及 setup() 时创建的计算属性和侦听器) 都已经停止。
+
+**这个钩子在服务器端渲染期间不会被调用。**
+
+#### onBeforeMount()
+
+注册一个钩子，在组件被挂载之前被调用。当这个钩子被调用时，组件已经完成了其响应式状态的设置，但还没有创建 DOM 节点。它即将首次执行 DOM 渲染过程。
+
+这个钩子在服务器端渲染期间不会被调用。
+
+#### onBeforeUpdate()
+
+注册一个钩子，在组件即将因为响应式状态变更而更新其 DOM 树之前调用。
+
+这个钩子可以用来在 Vue 更新 DOM 之前访问 DOM 状态。在这个钩子中更改状态也是安全的。
+
+**这个钩子在服务器端渲染期间不会被调用。**
+
+#### onBeforeUnmount()
+
+注册一个钩子，在组件实例被卸载之前调用。当这个钩子被调用时，组件实例依然还保有全部的功能。
+
+**这个钩子在服务器端渲染期间不会被调用。**
+
+#### onErrorCaptured()
+
+注册一个钩子，在捕获了后代组件传递的错误时调用。
+
+错误可以从以下几个来源中捕获：
+
+- 组件渲染
+- 事件处理器
+- 生命周期钩子
+- `setup()`函数
+- 侦听器
+- 自定义指令
+- 过度钩子
+
+错误传递顺序：
+
+- 从子组件传递到父组件的`onErrorCaptured()`，或者从继承链从底至上的“向上传递”
+- 如果子组件没有配置`onErrorCaptured()`,错误会发送到应用级的`app.config.errorHandler()`（前提是已经定义）
+- 如果`errorCaptured`本身抛出了错误，这个错误和原来捕获到的错误都将被发送到 `app.config.errorHandler`（前提是已经定义）
+
+> TIPS
+>
+> 可以在 errorCaptured() 中更改组件状态来为用户显示一个错误状态。单不因让状态渲染报错部分。
+> 通过返回 `false` 来阻止错误继续向上传递
+
+#### 开发环境专有钩子
+
+- onRenderTracked() 当组件渲染过程中追踪到响应式依赖时调用。**这个钩子仅在开发模式下可用，且在服务器端渲染期间不会被调用。**
+- onRenderTriggered() 响应式依赖的变更触发了组件渲染时调用。**这个钩子仅在开发模式下可用，且在服务器端渲染期间不会被调用。**
+
+#### onActivated()
+
+若组件实例是 \<KeepAlive\> 缓存树的一部分，当组件被插入到 DOM 中时调用。
+
+**这个钩子在服务器端渲染期间不会被调用。**
+
+#### onDeactivated()
+
+注册一个回调函数，若组件实例是 \<KeepAlive\> 缓存树的一部分，当组件从 DOM 中被移除时调用。
+
+**这个钩子在服务器端渲染期间不会被调用。**
+
+#### 服务端渲染专有钩子
+
+- onServerPrefetch() 注册一个异步函数，在组件实例在服务器上被渲染之前调用。
+
+如果这个钩子返回了一个 Promise，服务端渲染会在渲染该组件前等待该 Promise 完成。
+这个钩子仅会在服务端渲染中执行，可以用于执行一些仅存在于服务端的数据抓取过程。
+
+### 依赖注入
+
+#### provide()
+
+提供一个值，可以被后代组件注入。必须在组件的 setup() 阶段同步调用。
+
+`provide()` 接受两个参数：第一个参数是要注入的 key，可以是一个字符串或者一个 symbol，第二个参数是要注入的值
+
+```html
+<script setup>
+  import { ref, provide } from 'vue'
+  import { fooSymbol } from './injectionSymbols'
+
+  // 提供静态值
+  provide('foo', 'bar')
+
+  // 提供响应式的值
+  const count = ref(0)
+  provide('count', count)
+
+  // 提供时将 Symbol 作为 key
+  provide(fooSymbol, count)
+</script>
+```
+
+#### inject()
+
+注入一个由祖先组件或整个应用 (通过 `app.provide()`) 提供的值。会从直接父组件从下至上找最近的`provide`的值
+
+第一个参数是注入的 key。Vue 会遍历父组件链，通过匹配 key 来确定所提供的值。如果父组件链上多个组件对同一个 key 提供了值，那么离得更近的组件将会“覆盖”链上更远的组件所提供的值。如果没有能通过 key 匹配到值，`inject()` 将返回 `undefined`，除非提供了一个默认值。
+
+第二个参数是可选的，即在没有匹配到 key 时使用的默认值。它也可以是一个工厂函数，用来返回某些创建起来比较复杂的值。
+
+第三个参数，标记第二个参数是否是一个工厂函数。如果默认值本身就是一个函数，那么你必须将 false 作为第三个参数传入，表明这个函数就是默认值，而不是一个工厂函数。
+
+## Vue SFC 单文件组件
+
+### 相应语言块
+
+Vue 单文件组件通常以`*.vue`作为后缀。由`<template>`、`<script>` 和 `<style>`和其他自定义块构成
+
+- `template` 每个单文件组件最多包含一个，语块包裹内容被传递给`@vue/compiler-dom`,预编译为 JavaScript 渲染函数，并附在导出的组件作为其`render`选项
+- `script` 每个单文件组件最多包含一个，(使用 `<script setup>` 的情况除外)，默认导出应该是 Vue 的组件选项对象，可以是一个对象字面量或是 defineComponent 函数的返回值
+- `script setup` 每个单文件组件最多可以包含一个，这个脚本块将被预处理为组件的 setup() 函数，这意味着它将为每一个组件实例都执行。`<script setup>` 中的顶层作用域绑定都将**自动暴露给模板**。
+- `style` 每个单文件组件可以包含多个，一个 `<style>` 标签可以使用 `scoped` 或 `module` attribute
+- `自定义块` 用户特定需求使用额外的自定义块，或者第三方包依赖的语块
+
+### 自动名称推导
+
+Vue 单文件组件以下场景中会根据**文件名**自动推导其组件名：
+
+- 开发警告信息中需要格式化组件名时；
+- DevTools 中观察组件时；
+- 递归组件自引用时。例如一个名为 `FooBar.vue` 的组件可以在模板中通过 `<FooBar/>` 引用自己。(同名情况下) 这比明确注册/导入的组件优先级低。
+
+### 预处理器
+
+```html
+<script lang="ts">
+  // use TypeScript
+</script>
+
+<template lang="pug">p {{ msg }}</template>
+
+<style lang="scss">
+  $primary-color: #333;
+  body {
+    color: $primary-color;
+  }
+</style>
+```
+
+### `src`导入
+
+将组件分散到多个文件中
+
+```html
+<template src="./template.html"></template>
+<style src="./style.css"></style>
+<script src="./script.js"></script>
+```
+
+### \<script setup\>
+
+`<script setup>` 是在单文件组件 (SFC) 中使用组合式 API 的编译时语法糖。当同时使用 SFC 与组合式 API 时该语法是默认推荐。相比于普通的 `<script>` 语法，它具有更多优势：
+
+- 更少的样板内容，更简洁的代码。
+- 能够使用纯 TypeScript 声明 props 和自定义事件。
+- 更好的运行时性能 (其模板会被编译成同一作用域内的渲染函数，避免了渲染上下文代理对象)。
+- 更好的 IDE 类型推导性能 (减少了语言服务器从代码中抽取类型的工作)。
+
+> TIPS
+>
+> `<script setup>` 中的代码会在**每次组件实例被创建的时候执行**。
+> 任何在 `<script setup>` 声明的顶层的绑定 (包括变量，函数声明，以及 import 导入的内容) 都能在模板中直接使用
+> `<script setup>` 中不需要显式注册，但他们必须遵循 `vNameOfDirective` 这样的命名规范
+> 使用 `defineProps` 和 `defineEmits` API 声明`props`和`emits` > `<script setup>` 的组件是**默认关闭**的——即通过模板引用或者 `$parent` 链获取到的组件的公开实例，不会暴露任何在 `<script setup>` 中声明的绑定
+> `<script setup>`用 `useSlots` 和 `useAttrs`获取`$slots` 和 `$attrs` > `<script setup>` 中可以使用顶层 await。结果代码会被编译成 async setup()
+
+### CSS
+
+#### 组件作用域 CSS
+
+当 `<style>` 标签带有 `scoped` attribute 的时候，它的 CSS 只会影响当前组件的元素，和 Shadow DOM 中的样式封装类似。
+
+```html
+<style scoped>
+  .example {
+    color: red;
+  }
+</style>
+
+<template>
+  <div class="example">hi</div>
+</template>
+```
+
+#### 深度选择器
+
+处于 scoped 样式中的选择器如果想要做更“深度”的选择，也即：影响到子组件，可以使用 :deep() 这个伪类:
+
+```html
+<style scoped>
+.a :deep(.b) {
+  /* ... */
+}
+```
+
+#### 插槽选择器
+
+默认情况下，作用域样式不会影响到 `<slot/>` 渲染出来的内容，因为它们被认为是父组件所持有并传递进来的。使用 :slotted 伪类以明确地将插槽内容作为选择器的目标:
+
+```html
+<style scoped>
+  :slotted(div) {
+    color: red;
+  }
+</style>
+```
+
+#### 全局选择器
+
+如果想让其中一个样式规则应用到全局，比起另外创建一个 `<style>`，可以使用 :global 伪类:
+
+```html
+<style scoped>
+  :global(.red) {
+    color: red;
+  }
+</style>
+```
+
+#### 混合使用局部与全局样式
+
+```html
+<style>
+  /* 全局样式 */
+</style>
+
+<style scoped>
+  /* 局部样式 */
+</style>
+```
+
+#### CSS Modules
+
+一个 `<style module>` 标签会被编译为 CSS Modules 并且将生成的 CSS class 作为 `$style` 对象暴露给组件
+
+可以通过修改`module`的值的方式改变默认暴露的组件名称，如`module="page"`,暴露给组件的为`page`，而不再是`$style`
+
+```html
+<template>
+  <p :class="$style.red">This should be red</p>
+</template>
+
+<style module>
+  .red {
+    color: red;
+  }
+</style>
+```
+
+#### 组合式 API 访问 CSS
+
+可以通过 `useCssModule` API 在 `setup()` 和 `<script setup>` 中访问注入的 class。
+
+```javascript
+import { useCssModule } from 'vue'
+
+// 在 setup() 作用域中...
+// 默认情况下, 返回 <style module> 的 class
+useCssModule()
+
+// 具名情况下, 返回 <style module="classes"> 的 class
+useCssModule('classes')
+```
+
+#### CSS 中的 `v-bind()`
+
+单文件组件的 `<style>` 标签支持使用 `v-bind` CSS 函数将 CSS 的值链接到动态的组件状态
+
+```html
+<script setup>
+  const theme = {
+    color: 'red',
+  }
+</script>
+
+<template>
+  <p>hello</p>
+</template>
+
+<style scoped>
+  p {
+    /* 最终结果为 color: 'red' */
+    color: v-bind('theme.color');
+  }
+</style>
+```
+
+## 进阶
+
+### 渲染函数
+
+#### h()
+
+创建虚拟 DOM 节点 (vnode)。
+
+- 第一个参数既可以是一个字符串 (用于原生元素) 也可以是一个 Vue 组件定义。
+- 第二个参数是要传递的 prop
+- 第三个参数是子节点。
+
+```javascript
+import { h } from 'vue'
+
+// 创建普通元素
+// attribute 和 property 都可以用于 prop
+// Vue 会自动选择正确的方式来分配它
+h('div', { class: 'bar', innerHTML: 'hello' })
+
+// 创建组件
+// 传递 prop
+h(Foo, {
+  // 等价于 some-prop="hello"
+  someProp: 'hello',
+  // 等价于 @update="() => {}"
+  onUpdate: () => {},
+})
+```
+
+#### mergeProps()
+
+合并多个 props 对象，用于处理含有特定的 props 参数的情况。
+
+`mergeProps()` 支持以下特定 props 参数的处理，将它们合并成一个对象。
+
+- `class`
+- `style`
+- `onXxx` 事件监听器——多个同名的事件监听器将被合并到一个数组。
+
+#### cloneVNode()
+
+克隆一个 vnode。
+
+> TIPS
+>
+> 返回一个克隆的 vnode，可在原有基础上添加一些额外的 prop。
+> Vnode 被认为是一旦创建就不能修改的，你不应该修改已创建的 vnode 的 prop，而应该附带不同的/额外的 prop 来克隆它。
+> Vnode 具有特殊的内部属性，因此克隆它并不像 object spread 一样简单。cloneVNode() 处理了大部分这样的内部逻辑。
+>
+> **示例：**
+
+```javascript
+import { h, cloneVNode } from 'vue'
+
+const original = h('div')
+const cloned = cloneVNode(original, { id: 'foo' })
+```
+
+#### isVNode()
+
+判断一个值是否为 vnode 类型。
+
+#### resolveComponent()
+
+按名称手动解析已注册的组件。
+
+> TIPS
+>
+> 必须在渲染函数内调用
+> 如果组件未找到,返回组件名字符串
+>
+> **备注：如果你可以直接引入组件就不需使用此方法。**
+
+#### resolveDirective()
+
+按名称手动解析已注册的指令。
+
+> TIPS
+>
+> 必须在渲染函数内调用
+> 如果指令未找到,并返回 `undefined`
+>
+> **备注：如果你可以直接引入组件就不需使用此方法。**
+
+#### withDirectives()
+
+用于给 vnode 增加自定义指令。
+
+#### withModifiers()
+
+用于向事件处理函数添加内置 `v-on` 修饰符。
+
+### 服务端渲染
+
+#### renderToString()
+
+导出自 `vue/server-renderer`
+
+```javascript
+import { createSSRApp } from 'vue'
+import { renderToString } from 'vue/server-renderer'
+
+const app = createSSRApp({
+  data: () => ({ msg: 'hello' }),
+  template: `<div>{{ msg }}</div>`,
+})
+
+;(async () => {
+  const html = await renderToString(app)
+  console.log(html)
+})()
+```
+
+**SSR 上下文：**
+你可以传入一个可选的上下文对象用来在渲染过程中记录额外的数据
+
+```javascript
+const ctx = {}
+const html = await renderToString(app, ctx)
+
+console.log(ctx.teleports) // { '#teleported': 'teleported content' }
+```
+
+组件代码里通过 useSSRContext 辅助函数进行访问
+
+#### renderToNodeStream()
+
+将输入渲染为一个 Node.js Readable stream 实例。
+
+```javascript
+// 在一个 Node.js http 处理函数内
+renderToNodeStream(app).pipe(res)
+```
+
+> TIPS
+>
+> `vue/server-renderer` 的 ESM 构建不支持此方法，因为它是与 Node.js 环境分离的。请换为使用 `pipeToNodeWritable`。
+> 关于构建版本介绍可以转到[Vue3 原理深入浅出](https://m.wissbell.com/article/Vue3%E5%8E%9F%E7%90%86%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA)
+
+#### pipeToNodeWritable()
+
+将输入渲染并 pipe 到一个 Node.js Writable stream 实例。
+
+#### renderToWebStream()
+
+将输入渲染为一个 Web ReadableStream 实例。
+
+#### pipeToWebWritable()
+
+导出自 `vue/server-renderer`
+
+将输入渲染并 pipe 到一个 Web WritableStream 实例。
+
+#### enderToSimpleStream()
+
+导出自 `vue/server-renderer`
+
+通过一个简单的接口，将输入以 stream 模式进行渲染。
+
+#### useSSRContext()
+
+一个运行时 API，用于获取已传递给 renderToString() 或其他服务端渲染 API 的上下文对象
+
+### TypeScript 工具类型
+
+#### PropType\<T\>
+
+用于在用运行时 props 声明时给一个 prop 标注更复杂的类型定义。
+
+```typescript
+import type { PropType } from 'vue'
+
+interface Book {
+  title: string
+  author: string
+  year: number
+}
+
+export default {
+  props: {
+    book: {
+      // 提供一个比 `Object` 更具体的类型
+      type: Object as PropType<Book>,
+      required: true,
+    },
+  },
+}
+```
+
+#### ComponentCustomProperties
+
+用于增强组件实例类型以支持自定义全局属性。
+
+```typescript
+import axios from 'axios'
+
+declare module 'vue' {
+  interface ComponentCustomProperties {
+    $http: typeof axios
+    $translate: (key: string) => string
+  }
+}
+```
+
+#### ComponentCustomOptions
+
+用来扩展组件选项类型以支持自定义选项。
+
+```typescript
+import { Route } from 'vue-router'
+
+declare module 'vue' {
+  interface ComponentCustomOptions {
+    beforeRouteEnter?(to: any, from: any, next: () => void): void
+  }
+}
+```
+
+#### ComponentCustomProps
+
+用于扩展全局可用的 TSX props，以便在 TSX 元素上使用没有在组件选项上定义过的 props。
+
+```typescript
+declare module 'vue' {
+  interface ComponentCustomProps {
+    hello?: string
+  }
+}
+
+export {}
+```
+
+#### CSSProperties
+
+用于扩展在样式属性绑定上允许的值的类型。
+
+```typescript
+declare module 'vue' {
+  interface CSSProperties {
+    [key: `--${string}`]: string
+  }
+}
+```
+
+```html
+<div style={ { '--bg-color': 'blue' } }>
+```
+
+### 自定义渲染
+
+#### createRenderer()
+
+创建一个自定义渲染器。通过提供平台特定的节点创建以及更改 API，你可以在非 DOM 环境中也享受到 Vue 核心运行时的特性。
+
+```javascript
+import { createRenderer } from '@vue/runtime-core'
+
+const { render, createApp } = createRenderer({
+  patchProp,
+  insert,
+  remove,
+  createElement,
+  // ...
+})
+
+// `render` 是底层 API
+// `createApp` 返回一个应用实例
+export { render, createApp }
+
+// 重新导出 Vue 的核心 API
+export * from '@vue/runtime-core'
+```
+
+### RFC
+
+查阅`vuejs`正在实现或者推进的新特性。
+[vuejs RFC](https://github.com/vuejs/rfcs)
+
+（Request For Comments）征求修正意见书，它不代表这个 api 一定会正式通过，但是却可以让社区知道 vuejs 团队正在进行的一些工作，和一些新想法。
+
+Vue 的 RFC 分为四个阶段：
+
+1. Pending：当 RFC 作为 PR 提交时。
+2. Active：当 RFC PR 正在合并时。
+3. Landed：当 RFC 提出的更改在实际发行版中发布时。
+4. Rejected：关闭 RFC PR 而不合并时。
+
+### 周边
+
+### vite
+
+`create-vue`创建的`vue`项目默认使用`vite`作为打包工具
+
+vite 迁移指南详见[vite 官方中文文档](https://cn.vitejs.dev/)
+
+### pinia
+
+`vue3`推荐使用`pinia`平替`vuex`，`pinia`更轻量，更简洁。
+
+pinia 迁移指南详见[pinia 官方中文文档](https://pinia.vuejs.org/zh/)
+
+### Vue Router
+
+Vue.js 的官方路由,用法没什么变化。提供了组合式 API
+
+[Vue Router 文档](https://router.vuejs.org/zh/)

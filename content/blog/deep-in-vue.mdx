@@ -1,0 +1,159 @@
+---
+title: 'Vue3原理深入浅出'
+description: '本文基于《Vuejs技术内幕》和《Vuejs设计与实现》以及Vue3.2源代码编写。'
+date: '2022-07-25'
+hot: true
+published: true
+---
+
+Vue 版本：3.2.47
+
+## Vue 3.x 的整体变化
+
+尤雨溪在迭代 2.x 版本的 Vue 的过程中，因为底层设计的和 Api 的问题，发现 Vue2 存在很多需要解决的痛点。而且 Vue2.x 的`typescript`支持一直被人诟病。重新设计的 Vue3.x 实用`typescript`编写源码，带了更好的`typescript`支持，更好的源码维护性。另外数据劫持实用新的`Proxy`Api 使得 Vue2.x 中大数据渲染时过多`Watcher`实例造成的内存浪费问题得以解决。`Composition Api`也解决了逻辑块松散断接的问题。逻辑复用实践也得到大大提升。
+
+阅读 Vue3.x 源代码前，我们先了解 Vue.js 3.x 主要做了哪些优化。此外还分析了 Vue.js 3.x 的源码目录，不同的构建版本差异。
+
+### 优化内容
+
+#### 源码优化
+
+Vue3.x 使用了`monorepo`管理代码，实用`TypeScript`编写源码。
+
+##### monorepo
+
+Vue.js 3.x 通过`monorepo`的方式将不同模块拆分到不同`packages`目录下的子目录中，模块的颗粒度更细，职责也更加清晰。
+此外，部分包是可以独立于 Vue.js 使用的。
+
+Vue.js 2.x 的源码结构：
+
+```bash
+src/
+  # 编译模块
+  complier
+  # 通用运行时
+  core
+  # 平台专用代码
+  platforms
+  # 服务端渲染相关
+  server
+  # 单文件解析（single file component）.vue解析相关
+  sfc
+  # 工具代码
+  shared
+```
+
+Vue.js 3.x 的源码结构
+
+```bash
+packages/
+  # 编译运行时
+  complier-core
+  # Dom编译
+  complier-dom
+  # .vue编译
+  complier-sfc
+  # 服务端编译
+  complier-ssr
+  # 响应式
+  reactivity
+  # 与平台无关的运行时
+  runtime-core
+  # 浏览器环境运行时
+  runtime-dom
+  # 测试运行时
+  runtime-test
+  # 服务端渲染器
+  server-renderer
+  # 单文件组件演练环境
+  sfc-playground
+  # 多个包之间的共享内容
+  shared
+  # 用来测试代码体积
+  size-check
+  #调试编译器输出的开发工具
+  template-explorer
+  #针对vue2的兼容版本
+  vue-compat
+  # TS生命
+  global.d.ts
+```
+
+##### TypeScript
+
+Vue 的各个版本开发语言如下：
+
+- 1.x JavaScript
+- 2.x JavaScript with Flow
+- 3.x TypeScript
+
+Flow 并不能很好的推断复杂情况的上下文，Vue.js 3.x 使用了`TypeScript`重构了整个项目
+
+> **笔者吐槽：**
+>
+> 1. Vue2.x 的`TypeScript`支持可以理解为`AnyScript`
+> 2. Vue3.x 如果使用单文件组件，也没法定义泛型组件。然而 Jsx 在 Vue 中属性的合并规则没有文档，出问题了就得看源码排查，心智负担仍然很重。
+
+### 性能优化
+
+一句话概括 Vue3.x 的优化成功就是：变小了也变快了。
+
+#### 源码方面
+
+#### 数据劫持
+
+#### 编译
+
+### 语法 API 优化
+
+#### 逻辑组织
+
+#### 逻辑复用
+
+### 开放 RFC
+
+## 源码使用指南
+
+## 组件相关
+
+### 组件渲染
+
+### 组件更新
+
+### 组件实例
+
+### 组件 Props
+
+### 组件生命周期
+
+### 异步组件
+
+## 核心模块
+
+### 响应式实现原理
+
+### 计算属性原理
+
+### 监听器原理
+
+### 模版解析
+
+### AST 转化
+
+### 生成代码
+
+### 依赖注入
+
+### 插槽
+
+### 自定义指令
+
+### v-model
+
+## 内置组件
+
+## 官方生态
+
+### Vue Router 原理
+
+### VueX 核心原理

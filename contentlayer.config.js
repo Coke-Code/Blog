@@ -39,6 +39,9 @@ export const Project = defineDocumentType(() => ({
     url: {
       type: 'string',
     },
+    hot: {
+      type: 'boolean',
+    },
     repository: {
       type: 'string',
     },

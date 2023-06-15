@@ -35,7 +35,7 @@ export default function Home() {
 
       <div className="hidden w-screen h-px animate-glow md:block animate-fade-right bg-gradient-to-r from-zinc-300/0 via-zinc-300/50 to-zinc-300/0" />
       <div className="my-16 text-center animate-fade-in">
-        <h2 className="text-sm text-zinc-500 ">偶尔在网络上记录着什么。</h2>
+        <h2 className="text-sm text-zinc-500 ">在现实与假寐中两难</h2>
         <small className="absolute bottom-0 w-full text-center left-0 mb-10 text-xs text-zinc-500">
           <Link
             target="_blank"

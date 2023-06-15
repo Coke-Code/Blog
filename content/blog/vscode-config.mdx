@@ -1,0 +1,280 @@
+---
+title: '配置一个舒适的vscode环境'
+description: '前端开发相关插件工具、外观美化配置、以及代码自动格式化等内容。内附有笔者的配置'
+date: '2020-02-09'
+hot: false
+published: true
+---
+
+[用 60+ VSCode 插件，打造最强编辑器](https://mp.weixin.qq.com/s/X4y79GzaCbMcoTGcHm2cWg)
+
+## 插件篇
+
+### 必备
+
+- eslint: 代码风格检查
+- prettier: 代码格式化
+- code spell checker: 单词拼写检查
+- stylelint: 样式风格检查
+- TODO Highlight: 项目中的待办、重要提示等
+
+### 美化相关
+
+- vscode-icons: 提供漂亮的文件图标
+
+### Vue 特供
+
+- Vetur: vue2 模板支持
+- Volar: vue3 模板支持
+- Vue Peek: 跳转到组件定义
+- vue-helper: vue 生态语法提示（vuex、vue-router）
+
+### React 特供
+
+- ES7 React/Redux/GraphQL/React-Native snippets: React 代码片段
+
+### Markdown 特供
+
+- Markdown Preview Enhanced: 预览
+- Markdown lint: markdown 语法检查
+
+### Rust 特供
+
+- CodeLLDB: rust/c++编译工具
+- rust-analyzer: rust 语法检查
+
+### 小程序 特供
+
+- vscode weapp api: 为 VSCode 提供微信小程序 API 提示及代码片段
+- vscode wxml: 为 VSCode 提供 wxml 语法支持及代码片段
+- wechat-snippet: 微信小程序代码辅助,代码片段自动完成
+- wxml: 微信小程序 wxml 格式化以及高亮组件(高度自定义)
+- wxapp-helper: 自动生成配套的文件
+
+## 配置篇
+
+全局配置:file => preference => settings (快捷键 ctrl + ,)
+项目配置: 根目录创建`.vscode`文件夹，再创建`setting.json`文件
+优先级: vscode 会优先读取项目中的 ide 配置，在读全局的配置
+
+废话不多说，上我的配置
+笔者喜欢连体字体，因此使用了下列字体,如有需要自行下载。
+[Cascadia Code Light](https://github.com/microsoft/cascadia-code)
+
+以下配置涵盖的内容：
+
+- 代码保存自动格式化
+- 连字体
+- 单词拼写白名单
+- ToDo 插件高亮颜色
+
+**我们还可以设置配置同步，这样以后换电脑就不用再配置一次了。**
+
+```json
+{
+  "editor.suggestSelection": "first",
+  "editor.tabSize": 2,
+  "[yaml]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.autoIndent": "advanced",
+    "gitlens.codeLens.scopes": ["document"]
+  },
+  "git.enableSmartCommit": true,
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "git.ignoreRebaseWarning": true,
+  "gitlens.gitCommands.skipConfirmations": [
+    "fetch:command",
+    "stash-push:command",
+    "switch:command",
+    "tag-create:command"
+  ],
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.run": "onSave",
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue-html",
+    "vue",
+    "html"
+  ],
+  "files.associations": {
+    "*.vue": "vue",
+    "*.js": "javascript",
+    "*.jsx": "javascriptreact",
+    "*.wxml": "html",
+    "*.wxss": "css",
+    "*.ts": "typescript",
+    "*.tsx": "typescriptreact"
+  },
+  "[vue]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.formatOnSave": true
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.formatOnSave": true
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "emmet.includeLanguages": {
+    "*.vue": "vue"
+  },
+  "emmet.triggerExpansionOnTab": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "javascript.preferences.useAliasesForRenames": false,
+  "javascript.suggest.jsdoc.generateReturns": false,
+  "javascript.suggest.includeCompletionsForImportStatements": false,
+  "js/ts.implicitProjectConfig.experimentalDecorators": true,
+  "js/ts.implicitProjectConfig.strictNullChecks": true,
+  "js/ts.implicitProjectConfig.strictFunctionTypes": false,
+  "js/ts.implicitProjectConfig.checkJs": false,
+  "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?",
+  "editor.quickSuggestionsDelay": 100,
+  "editor.acceptSuggestionOnCommitCharacter": false,
+  "editor.minimap.renderCharacters": false,
+  "breadcrumbs.enabled": true,
+  "editor.formatOnPaste": true,
+  "eslint.alwaysShowStatus": true,
+  "editor.fontLigatures": true,
+  "editor.fontFamily": "'Cascadia Code Light', Consolas, 'Courier New', monospace",
+  "editor.fontSize": 14,
+  "workbench.iconTheme": "vscode-icons",
+  "fileheader.Author": "wiks.shi",
+  "fileheader.LastModifiedBy": "wiks.shi",
+  "terminal.integrated.profiles.windows": {
+    "PowerShell": {
+      "source": "PowerShell",
+      "icon": "terminal-powershell"
+    },
+    "Command Prompt": {
+      "path": [
+        "${env:windir}\\Sysnative\\cmd.exe",
+        "${env:windir}\\System32\\cmd.exe"
+      ],
+      "args": [],
+      "icon": "terminal-cmd"
+    },
+    "Git Bash": {
+      "source": "Git Bash"
+    },
+    "JavaScript Debug Terminal": {
+      "extensionIdentifier": "ms-vscode.js-debug",
+      "icon": "debug",
+      "id": "extension.js-debug.debugTerminal",
+      "title": "JavaScript Debug Terminal"
+    }
+  },
+  "terminal.integrated.defaultProfile.windows": "Command Prompt",
+  "vsicons.dontShowNewVersionMessage": true,
+  "cSpell.enableFiletypes": [
+    "!css",
+    "!json",
+    "!jsonc",
+    "!less",
+    "!markdown",
+    "!plaintext",
+    "!scss",
+    "!text",
+    "!yaml",
+    "!yml"
+  ],
+  "eslint.packageManager": "yarn",
+  "prettier.singleQuote": true,
+  "prettier.semi": false,
+  "prettier.requireConfig": false,
+  "prettier.useEditorConfig": false,
+  "prettier.htmlWhitespaceSensitivity": "ignore",
+  "editor.inlineSuggest.enabled": true,
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.language.colorizedBracketPairs": [],
+  "leetcode.hint.configWebviewMarkdown": false,
+  "leetcode.defaultLanguage": "javascript",
+  "leetcode.hint.commentDescription": false,
+  "editor.language.brackets": [],
+  "leetcode.workspaceFolder": "/Users/shiyuankun/Documents/epicShit.nosync/leetcode",
+  "leetcode.hint.commandShortcut": false,
+  "debug.allowBreakpointsEverywhere": true,
+  "cSpell.userWords": ["自定义单词"],
+  "typescript.updateImportsOnFileMove.enabled": "always",
+
+  "todohighlight.isEnable": true,
+  "todohighlight.isCaseSensitive": true,
+  "todohighlight.keywords": [
+    {
+      "text": "NOTE:",
+      "color": "#015fd5",
+      "backgroundColor": "rgba(255,255,255,0.1)",
+      "overviewRulerColor": "grey"
+    },
+    {
+      "text": "HACK:",
+      "color": "#000",
+      "isWholeLine": false
+    },
+    {
+      "text": "TODO:",
+      "color": "red",
+      "border": "1px solid red",
+      "borderRadius": "2px", //NOTE: using borderRadius along with `border` or you will see nothing change
+      "backgroundColor": "rgba(0,0,0,.2)"
+    }
+  ],
+
+  "todohighlight.include": [
+    "**/*.js",
+    "**/*.jsx",
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.html",
+    "**/*.php",
+    "**/*.css",
+    "**/*.scss"
+  ],
+  "todohighlight.exclude": [
+    "**/node_modules/**",
+    "**/bower_components/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/.vscode/**",
+    "**/.github/**",
+    "**/_output/**",
+    "**/*.min.*",
+    "**/*.map",
+    "**/.next/**"
+  ],
+  "todohighlight.maxFilesForSearch": 5120,
+  "todohighlight.toggleURI": false,
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "diffEditor.ignoreTrimWhitespace": false,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
+}
+```

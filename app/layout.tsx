@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     siteName: 'wissbell.com',
     images: [
       {
-        url: 'https://chronark.com/og.png',
+        url: 'https://www.wissbell.com/og.png',
         width: 1920,
         height: 1080,
       },
@@ -34,10 +34,6 @@ export const metadata: Metadata = {
       'max-image-preview': 'large',
       'max-snippet': -1,
     },
-  },
-  twitter: {
-    title: 'Chronark',
-    card: 'summary_large_image',
   },
   icons: {
     shortcut: '/favicon.png',
@@ -59,7 +55,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={[inter.variable, calSans.variable].join(' ')}>
+    <html lang="zh-CN" className={[inter.variable, calSans.variable].join(' ')}>
       <head>
         <Analytics />
       </head>

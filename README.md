@@ -76,17 +76,13 @@ $ pnpm start
 $ pnpm lint
 ```
 
-## Related Efforts
-
-[WissBell Yard](https://github.com/Coke-Code/Yard) - A simple blog manage project..
-
 ## Maintainers
 
 [@Coke-Code](https://github.com/Coke-Code).
 
 ## Contributing
 
-Feel free to dive in! [Open an issue](https://github.com/Coke-Code/standard-readme/issues/new) or submit PRs.
+Feel free to dive in! [Open an issue](https://github.com/Coke-Code/blog/issues/new) or submit PRs.
 
 Standard Readme follows the [Contributor Covenant](http://contributor-covenant.org/version/1/3/0/) Code of Conduct.
 

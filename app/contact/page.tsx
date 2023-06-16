@@ -1,4 +1,3 @@
-'use client'
 import { Github, Mail, Twitter } from 'lucide-react'
 import Link from 'next/link'
 import { Metadata } from 'next'

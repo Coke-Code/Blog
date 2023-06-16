@@ -1,4 +1,3 @@
-'use client'
 import Image from 'next/image'
 import { Metadata } from 'next'
 import { Navigation } from '../components/nav'

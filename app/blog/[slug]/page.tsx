@@ -5,6 +5,7 @@ import { Header } from './header'
 import './mdx.css'
 import { ReportView } from './view'
 import { Redis } from '@upstash/redis'
+import { Metadata, ResolvingMetadata } from 'next'
 
 export const revalidate = 60
 
@@ -22,6 +23,15 @@ export async function generateStaticParams(): Promise<Props['params'][]> {
     .map((p) => ({
       slug: p.slug,
     }))
+}
+export async function generateMetadata({ params }: Props) {
+  const slug = params?.slug
+  const project = allProjects.find((project) => project.slug === slug)!
+
+  return {
+    title: project.title,
+    description: project.description,
+  }
 }
 
 export default async function PostPage({ params }: Props) {

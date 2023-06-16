@@ -1,6 +1,7 @@
 'use client'
 import { Github, Mail, Twitter } from 'lucide-react'
 import Link from 'next/link'
+import { Metadata } from 'next'
 import { Navigation } from '../components/nav'
 import { Card } from '../components/card'
 
@@ -19,6 +20,10 @@ const socials = [
   },
 ]
 
+export const metadata: Metadata = {
+  title: '联系他山之石',
+  description: '用老派的方式联系我，在我拒绝两次后，第三次我会回复',
+}
 export default function Example() {
   return (
     <div className=" bg-gradient-to-tl from-zinc-900/0 via-zinc-900 to-zinc-900/0">

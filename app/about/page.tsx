@@ -1,7 +1,14 @@
 'use client'
 import Image from 'next/image'
+import { Metadata } from 'next'
 import { Navigation } from '../components/nav'
-import { Card } from '../components/card'
+import Head from 'next/head'
+
+export const metadata: Metadata = {
+  title: '关于他山之石',
+  description: '脚踏实地是人生常态',
+}
+
 export default function Example() {
   return (
     <div className=" bg-gradient-to-tl from-zinc-900/0 via-zinc-900 to-zinc-900/0">

@@ -6,9 +6,13 @@ import { Card } from '../components/card'
 import { Article } from './article'
 import { Redis } from '@upstash/redis'
 import { Eye } from 'lucide-react'
+import { Metadata } from 'next'
 
 const redis = Redis.fromEnv()
-
+export const metadata: Metadata = {
+  title: '他山之石的博文',
+  description: '字字句句像计算机一样清醒🧑‍💻',
+}
 export const revalidate = 3600
 export default async function ProjectsPage() {
   const views = (

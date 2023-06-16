@@ -1,5 +1,4 @@
 import '../global.css'
-import { Inter } from '@next/font/google'
 import LocalFont from '@next/font/local'
 import { Metadata } from 'next'
 import { Analytics } from './components/analytics'
@@ -8,7 +7,7 @@ export const metadata: Metadata = {
     default: 'wissbell.com',
     template: '%s | wissbell.com',
   },
-  description: '一个男人在网上记录着他的一些想法。',
+  description: '书里总爱写到喜出望外的傍晚',
   openGraph: {
     title: 'wissbell.com',
     description: '书里总爱写到喜出望外的傍晚',
@@ -39,10 +38,6 @@ export const metadata: Metadata = {
     shortcut: '/favicon.ico',
   },
 }
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--font-inter',
-})
 
 const calSans = LocalFont({
   src: '../public/fonts/CalSans-SemiBold.ttf',
@@ -55,7 +50,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="zh-CN" className={[inter.variable, calSans.variable].join(' ')}>
+    <html lang="zh-CN" className={[calSans.variable].join(' ')}>
       <head>
         <Analytics />
       </head>

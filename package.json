@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "fmt": "pnpm rome check . --apply-suggested && pnpm rome format . --write"
+    "fmt": "pnpm rome check . --apply-suggested && pnpm rome format . --write",
+    "postbuild": "next-sitemap"
   },
   "dependencies": {
     "@next/font": "^13.4.3",
@@ -21,6 +22,7 @@
     "markdown-wasm": "^1.2.0",
     "next": "13.4.3",
     "next-contentlayer": "^0.3.0",
+    "next-sitemap": "^4.1.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-wrap-balancer": "^0.5.0",

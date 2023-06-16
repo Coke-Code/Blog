@@ -7,15 +7,15 @@ export default function Example() {
     <div className=" bg-gradient-to-tl from-zinc-900/0 via-zinc-900 to-zinc-900/0">
       <Navigation />
       <div className="container flex items-center justify-center min-h-screen px-4 mx-auto">
-        <div className="grid w-full grid-cols-1 gap-8 mx-auto mt-32 sm:mt-0 lg:gap-16">
+        <div className="grid w-full grid-cols-1 gap-8 mx-auto mt-8 md:mt-32 sm:mt-0 lg:gap-16">
           <div className="p-4 relative flex flex-col items-center gap-4 md:gap-8 md:py-24  lg:pb-48  md:p-16">
-            <div className="flex flex-col group">
+            <div className="flex flex-col group items-center">
               <Image
                 src={'/wissbell.svg'}
                 alt="avatar"
-                width="192"
-                height="192"
-                className="h-48 w-48 max-md:invert rounded-full invert-50 group-hover:invert transition duration-1000 ease-in"
+                width="100"
+                height="100"
+                className="h-16 w-16 md:h-24 md:w-24 max-md:invert rounded-full invert-50 group-hover:invert transition duration-1000 ease-in"
               />
               <div>
                 <p className="text-zinc-500 mt-8 max-md:text-white group-hover:text-white text-sm text-center transition duration-700 ease-in">

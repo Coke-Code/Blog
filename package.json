@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "fmt": "pnpm rome check . --apply-suggested && pnpm rome format . --write",
-    "postbuild": "next-sitemap"
+    "postbuild": "next-sitemap --config next-sitemap.config.js"
   },
   "dependencies": {
     "@next/font": "^13.4.3",

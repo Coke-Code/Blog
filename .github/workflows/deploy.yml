@@ -1,0 +1,52 @@
+name: Build app and deploy to Tencent
+on:
+#触发事件，当收到推送的时候执行
+ push
+  
+jobs:
+  # 任务ID
+  build:
+    # 运行环境
+    runs-on: ubuntu-latest
+    # 步骤
+    steps:
+    - name: Checkout Code
+    # 使用别人的action
+      uses: actions/checkout@v2
+    # 步骤名称
+    - name: use node
+      uses: actions/setup-node@v2.5.1
+      with:
+        node-version: 16 # node版本
+    
+ 
+    - name: npm install
+      # 步骤执行指令
+      run: npm install
+    #working-directory此命令的运行目录
+      working-directory: ./
+ 
+    - name: build
+    #执行build命令，根据个人情况修改，如有多种配置可以改成build:prod,build:dev
+      run: npm run build
+      working-directory: ./
+      
+    # 命名这个任务为发布Deploy
+    - name: Deploy
+      # 因为构建之后，需要把代码上传到服务器上，所以需要连接到ssh，并且做一个拷贝操作
+      uses: cross-the-world/ssh-scp-ssh-pipelines@v1.1.4
+      env:
+        WELCOME: "ssh scp ssh pipelines"
+        LASTSSH: "Doing something after copying"
+      with:
+        host: ${{ secrets.USER_HOST }}
+        user: ${{ secrets.USER_NAME }}
+        pass: ${{ secrets.USER_PASS }}
+        port: 22
+        connect_timeout: 10s
+     #将dist所有的文件传输到服务器
+        local: './*'
+     #remote推送的是服务器内的文件地址,修改成你自己的文件地址
+        remote: /root/wissbell
+        last_ssh: |
+          pm2 restart wissbell 

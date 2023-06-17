@@ -30,9 +30,9 @@ jobs:
     #执行build命令，根据个人情况修改，如有多种配置可以改成build:prod,build:dev
       run: npm run build
       env:
-        UPSTASH_REDIS_REST_URL: ${{ env.UPSTASH_REDIS_REST_URL }}
-        UPSTASH_REDIS_REST_TOKEN: ${{ env.UPSTASH_REDIS_REST_TOKEN }}
-        NEXT_PUBLIC_BEAM_TOKEN: ${{ env.NEXT_PUBLIC_BEAM_TOKEN }}
+        UPSTASH_REDIS_REST_URL: ${{ vars.UPSTASH_REDIS_REST_URL }}
+        UPSTASH_REDIS_REST_TOKEN: ${{ vars.UPSTASH_REDIS_REST_TOKEN }}
+        NEXT_PUBLIC_BEAM_TOKEN: ${{ vars.NEXT_PUBLIC_BEAM_TOKEN }}
       working-directory: ./
       
     # 命名这个任务为发布Deploy

@@ -6,8 +6,6 @@ const getAllPosts = () => {
 	let allBlogPosts = [];
 	try {
 		const files = fs.readdirSync(dir);
-		console.error(files);
-
 		allBlogPosts = files
 			.filter((v) => v.endsWith(".mdx"))
 			.map((v) => v.replace(".mdx", ""));

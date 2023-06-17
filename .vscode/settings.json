@@ -1,4 +1,25 @@
 {
   "css.lint.unknownAtRules": "ignore",
-  "cSpell.words": ["tailwindcss", "wissbell"]
+  "cSpell.words": ["tailwindcss", "wissbell"],
+  "editor.formatOnSave": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": false
+  },
+  "files.associations": {
+    "*.js": "javascript",
+    "*.ts": "typescript",
+    "*.tsx": "typescriptreact"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "rome.rome",
+    "editor.formatOnSave": true
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "rome.rome",
+    "editor.formatOnSave": true
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "rome.rome",
+    "editor.formatOnSave": true
+  }
 }

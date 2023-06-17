@@ -35,7 +35,6 @@ jobs:
         UPSTASH_REDIS_REST_TOKEN: ${{ vars.UPSTASH_REDIS_REST_TOKEN }}
         NEXT_PUBLIC_BEAM_TOKEN: ${{ vars.NEXT_PUBLIC_BEAM_TOKEN }}
       working-directory: ./
-      
     # 命名这个任务为发布Deploy
     - name: Deploy
       # 因为构建之后，需要把代码上传到服务器上，所以需要连接到ssh，并且做一个拷贝操作
@@ -50,6 +49,13 @@ jobs:
         port: 22
         connect_timeout: 10s
         scp: |
-          './*' => /root/wissbell/
+          './.next/*' => /root/wissbell/.next/
+          './.contentlayer/*' => /root/wissbell/.contentlayer/
+          './pages/*' => /root/wissbell/pages/
+          './content/*' => /root/wissbell/content/
+          './public/*' => /root/wissbell/public/
+          './package.json' => /root/wissbell/package.json
+          './next-sitemap.config.js' => /root/wissbell/next-sitemap.config.js
+          './contentlayer.config.js' => /root/wissbell/contentlayer.config.js
         last_ssh: |
           pm2 restart wissbell 

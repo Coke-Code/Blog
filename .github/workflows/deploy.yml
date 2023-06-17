@@ -1,8 +1,8 @@
 name: Build app and deploy to Tencent
 on:
-#触发事件，当收到推送的时候执行
- push
-  
+  push:
+    branches:
+      - main
 jobs:
   # 任务ID
   build:
@@ -30,9 +30,9 @@ jobs:
     - name: build
     #执行build命令，根据个人情况修改，如有多种配置可以改成build:prod,build:dev
       run: |
-        echo "UPSTASH_REDIS_REST_URL variable : $UPSTASH_REDIS_REST_URL"
-        echo "UPSTASH_REDIS_REST_TOKEN variable : $UPSTASH_REDIS_REST_TOKEN"
-        echo "NEXT_PUBLIC_BEAM_TOKEN variable : $NEXT_PUBLIC_BEAM_TOKEN"
+        echo "UPSTASH_REDIS_REST_URL variable : ${{ vars.UPSTASH_REDIS_REST_URL }}"
+        echo "UPSTASH_REDIS_REST_TOKEN variable : ${{ vars.UPSTASH_REDIS_REST_TOKEN }}"
+        echo "NEXT_PUBLIC_BEAM_TOKEN variable : ${{ vars.NEXT_PUBLIC_BEAM_TOKEN }}"
         npm run build
       working-directory: ./
       

@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "fmt": "pnpm rome check . --apply-suggested && pnpm rome format . --write",
-    "postbuild": "next-sitemap --config next-sitemap.config.js"
+    "postbuild": "next-sitemap --config next-sitemap.config.js",
+    "sitemap": "next-sitemap --config next-sitemap.config.js"
   },
   "dependencies": {
     "@next/font": "^13.4.3",
@@ -18,6 +19,7 @@
     "@upstash/redis": "^1.20.6",
     "contentlayer": "^0.3.0",
     "framer-motion": "^10.12.12",
+    "globby": "^13.1.4",
     "lucide-react": "^0.220.0",
     "markdown-wasm": "^1.2.0",
     "next": "13.4.3",

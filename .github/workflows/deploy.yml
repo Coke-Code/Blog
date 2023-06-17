@@ -49,9 +49,7 @@ jobs:
         pass: ${{ secrets.USER_PASS }}
         port: 22
         connect_timeout: 10s
-     #将dist所有的文件传输到服务器
-        local: './*'
-     #remote推送的是服务器内的文件地址,修改成你自己的文件地址
-        remote: /root/wissbell
+        scp: |
+          './*' => /root/wissbell/
         last_ssh: |
           pm2 restart wissbell 

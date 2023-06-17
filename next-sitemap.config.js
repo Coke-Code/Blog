@@ -6,6 +6,8 @@ const getAllPosts = () => {
 	let allBlogPosts = [];
 	try {
 		const files = fs.readdirSync(dir);
+		console.error(files);
+
 		allBlogPosts = files
 			.filter((v) => v.endsWith(".mdx"))
 			.map((v) => v.replace(".mdx", ""));
@@ -14,6 +16,7 @@ const getAllPosts = () => {
 	}
 	return allBlogPosts;
 };
+
 module.exports = {
 	siteUrl: process.env.SITE_URL || "https://www.wissbell.com",
 	generateRobotsTxt: true, // (optional)
@@ -34,10 +37,6 @@ module.exports = {
 				userAgent: "*",
 				allow: "/",
 			},
-		],
-		additionalSitemaps: [
-			"https://www.wissbell.com/sitemap.xml",
-			"https://www.wissbell.com/sitemap-0.xml",
 		],
 	},
 };

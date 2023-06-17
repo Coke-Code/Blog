@@ -7,4 +7,3 @@ Host: https://www.wissbell.com
 
 # Sitemaps
 Sitemap: https://www.wissbell.com/sitemap.xml
-Sitemap: https://www.wissbell.com/sitemap-0.xml

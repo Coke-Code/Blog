@@ -13,7 +13,7 @@ export default function Example() {
 		<div className=" bg-gradient-to-tl from-zinc-900/0 via-zinc-900 to-zinc-900/0">
 			<Navigation />
 			<div className="container flex items-center justify-center min-h-screen px-4 mx-auto">
-				<div className="grid w-screen grid-cols-1 gap-8 mx-auto mt-32 sm:mt-0 lg:gap-16">
+				<div className="grid grid-cols-1 gap-8 mx-auto mt-32 sm:mt-0 lg:gap-16">
 					<div className="p-4 relative flex flex-col items-center gap-4 md:gap-8 md:py-24  lg:pb-48  md:p-16">
 						<div className="flex flex-col group items-center">
 							<Image
@@ -70,10 +70,10 @@ export default function Example() {
 											<p className="group-hover:text-white">
 												在现实与假寐中两难
 											</p>
-											<ul className="list-disc mt-4 text-zinc-700 max-md:text-zinc-400 group-hover:text-zinc-400 text-xs  transition duration-700 ease-in">
+											<p className="mt-4 text-zinc-700 break-all max-md:text-zinc-400 group-hover:text-zinc-400 text-xs  transition duration-700 ease-in">
 												基于Next.js + TailwindCSS编写的SSG博客方案，采用Github
 												Action自动部署，专注于内容。
-											</ul>
+											</p>
 										</div>
 										<div
 											aria-hidden="true"
@@ -123,7 +123,7 @@ export default function Example() {
 											<p className="group-hover:text-white">
 												书里总爱写到喜出望外的傍晚。
 											</p>
-											<p className=" mt-4 text-zinc-700 max-md:text-zinc-400 group-hover:text-zinc-400 text-xs  transition duration-700 ease-in">
+											<p className="mt-4 text-zinc-700 break-all max-md:text-zinc-400 group-hover:text-zinc-400 text-xs  transition duration-700 ease-in">
 												基于Nuxt.js + Vercel
 												Design设计语言编写的SSR博客方案。支持多语言切换、文章搜索、主题模式切换以及Lottie动画等功能，基于内容繁杂、编码质量以及SEO性能等原因现已废弃。
 											</p>

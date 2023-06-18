@@ -23,7 +23,7 @@ jobs:
         pass: ${{ secrets.USER_PASS }}
         port: 22
         connect_timeout: 10s
-        first_ssh:
+        first_ssh: |
           cd wissbell
           git fetch
           npm i

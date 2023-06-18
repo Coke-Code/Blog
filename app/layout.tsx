@@ -4,7 +4,7 @@ import { Metadata } from "next";
 import { Analytics } from "./components/analytics";
 export const metadata: Metadata = {
 	title: {
-		default: "wissbell.com",
+		default: "他山之石",
 		template: "%s | wissbell.com",
 	},
 	description: "书里总爱写到喜出望外的傍晚",

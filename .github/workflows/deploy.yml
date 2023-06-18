@@ -24,7 +24,7 @@ jobs:
         port: 22
         connect_timeout: 10s
         first_ssh: |
-          cd wissbell
+          cd blog
           git fetch
           npm i
           npm run build

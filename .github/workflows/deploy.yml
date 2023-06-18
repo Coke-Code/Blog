@@ -1,8 +1,8 @@
-name: Build app and deploy to Tencent
+name: Deploy to Tencent
 on:
   push:
-    branches:
-      - main
+    tags: # 当我们提交代码为tag 是以'v'开头的时候才会触发自动部署到服务端 如 git push tag v0.1.0
+      - 'v*'
 jobs:
   # 任务ID
   build:
@@ -11,31 +11,6 @@ jobs:
     environment: prod
     # 步骤
     steps:
-    - name: Checkout Code
-    # 使用别人的action
-      uses: actions/checkout@v2
-    # 步骤名称
-    - name: use node
-      uses: actions/setup-node@v2.5.1
-      with:
-        node-version: 16 # node版本
-    
- 
-    - name: npm install
-      # 步骤执行指令
-      run: npm install
-    #working-directory此命令的运行目录
-      working-directory: ./
- 
-    - name: build
-    #执行build命令，根据个人情况修改，如有多种配置可以改成build:prod,build:dev
-      run: npm run build
-      env:
-        UPSTASH_REDIS_REST_URL: ${{ vars.UPSTASH_REDIS_REST_URL }}
-        UPSTASH_REDIS_REST_TOKEN: ${{ vars.UPSTASH_REDIS_REST_TOKEN }}
-        NEXT_PUBLIC_BEAM_TOKEN: ${{ vars.NEXT_PUBLIC_BEAM_TOKEN }}
-      working-directory: ./
-    # 命名这个任务为发布Deploy
     - name: Deploy
       # 因为构建之后，需要把代码上传到服务器上，所以需要连接到ssh，并且做一个拷贝操作
       uses: cross-the-world/ssh-scp-ssh-pipelines@v1.1.4
@@ -48,14 +23,10 @@ jobs:
         pass: ${{ secrets.USER_PASS }}
         port: 22
         connect_timeout: 10s
-        scp: |
-          './.next/*' => /root/wissbell/.next/
-          './.contentlayer/*' => /root/wissbell/.contentlayer/
-          './pages/*' => /root/wissbell/pages/
-          './content/*' => /root/wissbell/content/
-          './public/*' => /root/wissbell/public/
-          './package.json' => /root/wissbell/package.json
-          './next-sitemap.config.js' => /root/wissbell/next-sitemap.config.js
-          './contentlayer.config.js' => /root/wissbell/contentlayer.config.js
+        first_ssh:
+          cd wissbell
+          git fetch
+          npm i
+          run build
         last_ssh: |
           pm2 restart wissbell 

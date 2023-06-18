@@ -26,6 +26,8 @@ jobs:
         first_ssh: |
           cd Blog
           git fetch
+          rm -rf .next
+          rm -rf .contentlayer
           npm i
           npm run build
         last_ssh: |

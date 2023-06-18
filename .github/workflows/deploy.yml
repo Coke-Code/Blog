@@ -27,6 +27,6 @@ jobs:
           cd wissbell
           git fetch
           npm i
-          run build
+          npm run build
         last_ssh: |
           pm2 restart wissbell 

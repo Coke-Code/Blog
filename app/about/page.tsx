@@ -13,7 +13,7 @@ export default function Example() {
 		<div className=" bg-gradient-to-tl from-zinc-900/0 via-zinc-900 to-zinc-900/0">
 			<Navigation />
 			<div className="container flex items-center justify-center min-h-screen px-4 mx-auto">
-				<div className="grid w-full grid-cols-1 gap-8 mx-auto mt-8 md:mt-32 sm:mt-0 lg:gap-16">
+				<div className="grid w-screen grid-cols-1 gap-8 mx-auto mt-32 sm:mt-0 lg:gap-16">
 					<div className="p-4 relative flex flex-col items-center gap-4 md:gap-8 md:py-24  lg:pb-48  md:p-16">
 						<div className="flex flex-col group items-center">
 							<Image

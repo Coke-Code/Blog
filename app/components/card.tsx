@@ -6,19 +6,19 @@ import {
 	useSpring,
 } from "framer-motion";
 
-import { MouseEventHandler, PropsWithChildren } from "react";
+import { MouseEvent, MouseEventHandler, PropsWithChildren } from "react";
 
 export const Card: React.FC<PropsWithChildren> = ({ children }) => {
 	const mouseX = useSpring(0, { stiffness: 500, damping: 100 });
 	const mouseY = useSpring(0, { stiffness: 500, damping: 100 });
 
-	function onMouseMove({ currentTarget, clientX, clientY }: any) {
+	function onMouseMove({ currentTarget, clientX, clientY }: MouseEvent) {
 		const { left, top } = currentTarget.getBoundingClientRect();
 		mouseX.set(clientX - left);
 		mouseY.set(clientY - top);
 	}
-	let maskImage = useMotionTemplate`radial-gradient(240px at ${mouseX}px ${mouseY}px, white, transparent)`;
-	let style = { maskImage, WebkitMaskImage: maskImage };
+	const maskImage = useMotionTemplate`radial-gradient(240px at ${mouseX}px ${mouseY}px, white, transparent)`;
+	const style = { maskImage, WebkitMaskImage: maskImage };
 
 	return (
 		<div

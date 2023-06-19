@@ -37,6 +37,9 @@ git clone https://github.com/Coke-Code/Blog.git
 
 ## 使用
 
+1. 配置[upstashRedis]<https://console.upstash.com/>用于存储访问量数据,配置`.env`加入变量`UPSTASH_REDIS_REST_URL`和`UPSTASH_REDIS_REST_TOKEN`。
+2. **可选**配置[beam](https://beamanalytics.io/),用于统计访问量。配置`.env`加入变量`BEAM_TOKEN`。
+
 npm:
 
 ```sh

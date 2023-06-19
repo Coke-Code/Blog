@@ -36,14 +36,14 @@ export default function Example() {
 								<p>深圳</p>
 							</div>
 						</div>
-						<div className="grid max-w-3xl w-full grid-cols-1 mt-12 md:mt-4 items-baseline gap-y-8 md:grid-cols-4">
+						<div className="flex max-w-3xl mt-12 md:mt-4 items-baseline gap-y-8 flex-col md:flex-row">
 							<h2
 								id=":r6:"
-								className="text-sm font-semibold text-zinc-100 text-center md:text-left"
+								className="text-sm w-full flex-1 md:basis-1/4 font-semibold text-zinc-100 text-center md:text-left"
 							>
 								站点改版信息
 							</h2>
-							<div className="md:col-span-3">
+							<div className="flex-1 md:basis-3/4">
 								<div className="space-y-16">
 									<article className="group relative flex flex-col items-start">
 										<h3 className="text-base font-semibold tracking-tight text-zinc-100">

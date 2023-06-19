@@ -37,6 +37,9 @@ git clone https://github.com/Coke-Code/Blog.git
 
 ## Usage
 
+1. Configure [upstashRedis](https://console.upstash.com/) to store access volume data, configure `.env` to add variables `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN`.
+2. **Optional** Configure [beam](https://beamanalytics.io/) to count access volume. Configure `.env` to add variables `BEAM_TOKEN`.
+
 npm:
 
 ```sh

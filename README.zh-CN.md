@@ -96,7 +96,7 @@ $ pnpm lint
 
 ## 开源协议
 
-[MIT](LICENSE) © Richard Littauer
+[MIT](LICENSE) © coke-code
 
 ## 特别鸣谢
 

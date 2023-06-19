@@ -97,3 +97,7 @@ This project exists thanks to all the people who contribute.
 ## License
 
 [MIT](LICENSE) © Coke-Code
+
+## Special thanks
+
+[chronark](https://github.com/chronark/chronark.com)

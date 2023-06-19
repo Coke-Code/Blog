@@ -25,7 +25,7 @@ jobs:
         connect_timeout: 10s
         first_ssh: |
           cd Blog
-          git fetch
+          git pull
           rm -rf .next
           rm -rf .contentlayer
           npm i

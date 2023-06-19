@@ -79,10 +79,6 @@ $ pnpm start
 $ pnpm lint
 ```
 
-## 关联项目
-
-[网上邻居后台](https://github.com/Coke-Code/Yard) - 一个简单的博客管理后台项目。
-
 ## 维护者
 
 [@Coke-Code](https://github.com/Coke-Code).

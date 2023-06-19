@@ -12,7 +12,7 @@ jobs:
     # 步骤
     steps:
     - name: Deploy
-      # 因为构建之后，需要把代码上传到服务器上，所以需要连接到ssh，并且做一个拷贝操作
+      # 支持拷贝和SSH，因为服务器在中国。因此使用SSH + GIT
       uses: cross-the-world/ssh-scp-ssh-pipelines@v1.1.4
       env:
         WELCOME: "ssh scp ssh pipelines"

@@ -1,5 +1,4 @@
 import "../global.css";
-import LocalFont from "@next/font/local";
 import { Metadata } from "next";
 import { Analytics } from "./components/analytics";
 export const metadata: Metadata = {
@@ -39,10 +38,6 @@ export const metadata: Metadata = {
 	},
 };
 
-const calSans = LocalFont({
-	src: "../public/fonts/CalSans-SemiBold.ttf",
-	variable: "--font-calsans",
-});
 
 export default function RootLayout({
 	children,
@@ -50,7 +45,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang="zh-CN" className={[calSans.variable].join(" ")}>
+		<html lang="zh-CN">
 			<head>
 				<Analytics />
 			</head>

@@ -1,5 +1,5 @@
 "use client";
-import { ArrowLeft, Eye, Github, Twitter } from "lucide-react";
+import { ArrowLeft, Clock, Eye, Github, Twitter } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 
@@ -9,8 +9,11 @@ type Props = {
 		title: string;
 		description: string;
 		repository?: string;
+		readingTime: {
+			words: number;
+			minutes: number;
+		};
 	};
-
 	views: number;
 };
 export const Header: React.FC<Props> = ({ project, views }) => {
@@ -30,6 +33,7 @@ export const Header: React.FC<Props> = ({ project, views }) => {
 			href: project.url,
 		});
 	}
+
 	useEffect(() => {
 		if (!ref.current) return;
 		const observer = new IntersectionObserver(([entry]) =>
@@ -99,6 +103,15 @@ export const Header: React.FC<Props> = ({ project, views }) => {
 						<p className="mt-6 text-lg leading-8 text-zinc-300">
 							{project.description}
 						</p>
+					</div>
+
+					<div className="flex mt-6 items-center text-xs text-zinc-300">
+						<Clock className="w-3 h-3" />
+						<span className="ml-1">
+							大约
+							{project.readingTime.words}个字,预计花
+							{project.readingTime.minutes.toFixed(1)}分钟
+						</span>
 					</div>
 
 					<div className="mx-auto mt-10 max-w-2xl lg:mx-0 lg:max-w-none">

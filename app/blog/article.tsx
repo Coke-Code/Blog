@@ -1,6 +1,6 @@
 import type { Project } from "@/.contentlayer/generated";
 import Link from "next/link";
-import { Eye, View } from "lucide-react";
+import { Clock, Eye, View } from "lucide-react";
 
 type Props = {
 	project: Project;
@@ -34,6 +34,16 @@ export const Article: React.FC<Props> = ({ project, views }) => {
 				<p className="z-20 mt-4 text-sm  duration-1000 text-zinc-400 group-hover:text-zinc-200">
 					{project.description}
 				</p>
+				<div className="flex items-center justify-start mt-4">
+					<span className="flex items-center gap-1 text-xs text-zinc-500">
+						<Clock className="w-3 h-3" />
+						<span className="ml-1">
+							大约
+							{project.readingTime.words}个字,预计花
+							{project.readingTime.minutes.toFixed(1)}分钟
+						</span>
+					</span>
+				</div>
 			</article>
 		</Link>
 	);

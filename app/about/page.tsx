@@ -24,10 +24,10 @@ export default function Example() {
 								className="h-16 w-16 md:h-24 md:w-24 max-md:invert rounded-full invert-50 group-hover:invert transition duration-1000 ease-in"
 							/>
 							<div>
-								<p className="text-zinc-500 mt-8 max-md:text-white group-hover:text-white text-sm text-center transition duration-700 ease-in">
+								<p className="text-zinc-400 mt-8 max-md:text-white group-hover:text-white text-base font-bold text-center transition duration-700 ease-in">
 									他山之石
 								</p>
-								<p className="text-zinc-500 mt-2 max-md:text-white group-hover:text-white text-sm text-center transition duration-700 ease-in">
+								<p className="text-zinc-400 mt-2 max-md:text-white group-hover:text-white text-base text-center transition duration-700 ease-in">
 									英特纳雄耐尔就一定要实现
 								</p>
 							</div>
@@ -39,7 +39,7 @@ export default function Example() {
 						<div className="flex max-w-3xl mt-12 md:mt-4 items-baseline gap-y-8 flex-col md:flex-row">
 							<h2
 								id=":r6:"
-								className="text-sm w-full flex-1 md:basis-1/4 font-semibold text-zinc-100 text-center md:text-left"
+								className="text-sm text-zinc-400 w-full flex-1 md:basis-1/4 font-semibold text-zinc-100 text-center md:text-left"
 							>
 								站点改版信息
 							</h2>
@@ -54,7 +54,7 @@ export default function Example() {
 												href="https://github.com/Coke-Code/Blog"
 											>
 												<span className="absolute -inset-x-4 -inset-y-6 z-20 sm:-inset-x-6 sm:rounded-2xl" />
-												<span className="relative z-10">他山之石</span>
+												<span className="relative z-10 text-zinc-400 group-hover:text-white">他山之石</span>
 											</a>
 										</h3>
 										<p className="relative z-10 order-first mb-3 flex items-center text-sm text-zinc-500 pl-3.5">
@@ -70,7 +70,7 @@ export default function Example() {
 											<p className="group-hover:text-white">
 												在现实与假寐中两难
 											</p>
-											<p className="mt-4 text-zinc-700 break-all max-md:text-zinc-400 group-hover:text-zinc-400 text-xs  transition duration-700 ease-in">
+											<p className="mt-4 text-zinc-600 break-all max-md:text-zinc-400 group-hover:text-zinc-400 text-xs  transition duration-700 ease-in">
 												基于Next.js + TailwindCSS编写的SSG博客方案，采用Github
 												Action自动部署，专注于内容。
 											</p>
@@ -107,7 +107,7 @@ export default function Example() {
 												href="https://gitee.com/coke-code/sight"
 											>
 												<span className="absolute -inset-x-4 -inset-y-6 z-20 sm:-inset-x-6 sm:rounded-2xl" />
-												<span className="relative z-10">癸</span>
+												<span className="relative z-10 text-zinc-400 group-hover:text-white">癸</span>
 											</a>
 										</h3>
 										<p className="relative z-10 order-first mb-3 flex items-center text-sm text-zinc-500 pl-3.5">
@@ -123,7 +123,7 @@ export default function Example() {
 											<p className="group-hover:text-white">
 												书里总爱写到喜出望外的傍晚。
 											</p>
-											<p className="mt-4 text-zinc-700 break-all max-md:text-zinc-400 group-hover:text-zinc-400 text-xs  transition duration-700 ease-in">
+											<p className="mt-4 text-zinc-600 break-all max-md:text-zinc-400 group-hover:text-zinc-400 text-xs  transition duration-700 ease-in">
 												基于Nuxt.js + Vercel
 												Design设计语言编写的SSR博客方案。支持多语言切换、文章搜索、主题模式切换以及Lottie动画等功能，基于内容繁杂、编码质量以及SEO性能等原因现已废弃。
 											</p>

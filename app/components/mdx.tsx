@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useMDXComponent } from "next-contentlayer/hooks";
 
-function clsx(...args: any) {
+function clsx(...args) {
 	return args.filter(Boolean).join(" ");
 }
 const components = {

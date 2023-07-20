@@ -1,8 +1,17 @@
 {
   "css.lint.unknownAtRules": "ignore",
   "cSpell.words": [
+    "clsx",
     "Contentlayer",
+    "lucide",
+    "mget",
+    "nocheck",
+    "Nuxt",
+    "pageviews",
+    "quoteless",
+    "staticity",
     "tailwindcss",
+    "upstash",
     "wissbell"
   ],
   "editor.formatOnSave": false,

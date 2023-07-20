@@ -80,11 +80,11 @@ export default async function ProjectsPage() {
 
 								<h2
 									id="featured-post"
-									className="mt-4 text-3xl font-bold dark:text-zinc-100 tex-zinc-800 group-hover:text-black dark:group-hover:text-white sm:text-4xl font-display"
+									className="mt-4 text-3xl font-bold dark:text-zinc-100 tex-zinc-900 group-hover:text-black dark:group-hover:text-white sm:text-4xl font-display"
 								>
 									{featured.title}
 								</h2>
-								<p className="mt-4 leading-8 dark:duration-150 :text-zinc-400 tex-zinc-500 group-hover:text-zinc-600  dark:group-hover:text-zinc-300">
+								<p className="mt-4 leading-8 dark:duration-150 text-zinc-500 group-hover:text-zinc-700  dark:group-hover:text-zinc-300">
 									{featured.description}
 								</p>
 								<div className="flex items-center justify-start mt-4">

@@ -5,7 +5,7 @@ import { Navigation } from "../components/nav";
 import { Card } from "../components/card";
 import { Article } from "./article";
 import { Redis } from "@upstash/redis";
-import { Eye } from "lucide-react";
+import { Eye, Clock } from "lucide-react";
 import { Metadata } from "next";
 
 const redis = Redis.fromEnv();
@@ -87,6 +87,16 @@ export default async function ProjectsPage() {
 								<p className="mt-4 leading-8 duration-150 :text-zinc-400 tex-zinc-500 group-hover:text-zinc-600  dark:group-hover:text-zinc-300">
 									{featured.description}
 								</p>
+								<div className="flex items-center justify-start mt-4">
+									<span className="flex items-center gap-1 text-xs text-zinc-500">
+										<Clock className="w-3 h-3" />
+										<span className="ml-1">
+											大约
+											{featured.readingTime.words}个字,预计花
+											{featured.readingTime.minutes.toFixed(1)}分钟
+										</span>
+									</span>
+								</div>
 								<div className="absolute bottom-4 md:bottom-8">
 									<p className="hidden dark:text-zinc-200 text-zinc-400 hover:text-zinc-850 dark:hover:text-zinc-50 lg:block">
 										更多 <span aria-hidden="true">&rarr;</span>

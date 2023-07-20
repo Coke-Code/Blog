@@ -13,8 +13,8 @@ export default function Theme(props:ThemeProps) {
   const { theme, setTheme  } = useTheme()
   const [showTheme, setShowTheme] = useState(false)
   const themeMap:themeMap = {
-    light: '光',
-    dark: '暗',
+    light: '明亮',
+    dark: '黑暗',
     system: '自动'
   }
   const handleSwitchTheme = (theme:themeType) => {

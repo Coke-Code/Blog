@@ -19,7 +19,7 @@ module.exports = {
 	siteUrl: process.env.SITE_URL || "https://www.wissbell.com",
 	generateRobotsTxt: true, // (optional)
 	additionalPaths: async (config) => {
-		const result = ["/", "/about", "/contact}"].map((v) =>
+		const result = ["/", "/about", "/contact"].map((v) =>
 			config.transform(config, v),
 		);
 		const allBlogPosts = getAllPosts();

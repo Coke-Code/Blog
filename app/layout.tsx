@@ -1,5 +1,4 @@
 import "../global.css";
-import LocalFont from "@next/font/local";
 import { Metadata } from "next";
 import { Analytics } from "./components/analytics";
 import { Providers } from './providers'
@@ -40,10 +39,6 @@ export const metadata: Metadata = {
 	},
 };
 
-const calSans = LocalFont({
-	src: "../public/fonts/CalSans-SemiBold.ttf",
-	variable: "--font-calsans",
-});
 
 export default function RootLayout({
 	children,
@@ -52,7 +47,7 @@ export default function RootLayout({
 }) {
 
 	return (
-		<html lang="zh-CN" className={[calSans.variable].join(" ")} suppressHydrationWarning>
+		<html lang="zh-CN" suppressHydrationWarning>
 			<head>
 				<Analytics />
 			</head>

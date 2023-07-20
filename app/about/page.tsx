@@ -24,14 +24,14 @@ export default function Example() {
 								className="h-16 w-16 md:h-24 md:w-24  rounded-full dark:invert invert group-hover:invert dark:group-hover:invert transition duration-1000 ease-in"
 							/>
 							<div>
-								<p className="text-zinc-500 mt-8 max-md:text-white group-hover:text-white text-sm text-center transition duration-700 ease-in">
+								<p className="text-zinc-500 mt-8 max-md:text-white group-hover:text-black dark:group-hover:text-white text-sm text-center transition duration-700 ease-in">
 									他山之石
 								</p>
-								<p className="text-zinc-500 mt-2 max-md:text-white group-hover:text-white text-sm text-center transition duration-700 ease-in">
+								<p className="text-zinc-500 mt-2 max-md:text-white group-hover:text-black dark:group-hover:text-white text-sm text-center transition duration-700 ease-in">
 									英特纳雄耐尔就一定要实现
 								</p>
 							</div>
-							<div className="text-zinc-700 mt-10 max-md:text-zinc-400 group-hover:text-zinc-400 text-xs text-center leadings-2 md:leading-5 transition duration-700 ease-in">
+							<div className="text-zinc-700 mt-10 max-md:text-zinc-400 group-hover:text-zinc700 dark:group-hover:text-zinc-400 text-xs text-center leadings-2 md:leading-5 transition duration-700 ease-in">
 								<p>前端开发工程师</p>
 								<p>深圳</p>
 							</div>
@@ -46,7 +46,7 @@ export default function Example() {
 							<div className="flex-1 md:basis-3/4">
 								<div className="space-y-16">
 									<article className="group relative flex flex-col items-start">
-										<h3 className="text-base font-semibold tracking-tight text-zinc-100">
+										<h3 className="text-base font-semibold tracking-tight dark:text-zinc-100 text-zinc-800">
 											<div className="absolute -inset-x-4 -inset-y-6 z-0 scale-95 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 bg-zinc-800/50 sm:-inset-x-6 sm:rounded-2xl" />
 											<a
 												target="_blank"
@@ -67,10 +67,10 @@ export default function Example() {
 											2023-06-01
 										</p>
 										<div className="relative z-10 mt-2 text-sm text-zinc-400">
-											<p className="group-hover:text-white">
+											<p className="dark:group-hover:text-white group-hover:text-black">
 												在现实与假寐中两难
 											</p>
-											<p className="mt-4 text-zinc-700 break-all max-md:text-zinc-400 group-hover:text-zinc-400 text-xs  transition duration-700 ease-in">
+											<p className="mt-4 text-zinc-700 break-all max-md:text-zinc-400 group-hover:text-zinc-700 dark:group-hover:text-zinc-400 text-xs  transition duration-700 ease-in">
 												基于Next.js + TailwindCSS编写的SSG博客方案，采用Github
 												Action自动部署，专注于内容。
 											</p>
@@ -123,7 +123,7 @@ export default function Example() {
 											<p className="group-hover:text-white">
 												书里总爱写到喜出望外的傍晚。
 											</p>
-											<p className="mt-4 text-zinc-700 break-all max-md:text-zinc-400 group-hover:text-zinc-400 text-xs  transition duration-700 ease-in">
+											<p className="mt-4 text-zinc-700 break-all max-md:text-zinc-400 group-hover:text-zinc-700 dark:group-hover:text-zinc-400 text-xs  transition duration-700 ease-in">
 												基于Nuxt.js + Vercel
 												Design设计语言编写的SSR博客方案。支持多语言切换、文章搜索、主题模式切换以及Lottie动画等功能，基于内容繁杂、编码质量以及SEO性能等原因现已废弃。
 											</p>

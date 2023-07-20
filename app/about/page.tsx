@@ -16,7 +16,7 @@ export default function about() {
 				<div className="grid grid-cols-1 gap-8 mx-auto sm:mt-0 lg:gap-16">
 					<div className="relative flex flex-col items-center gap-4 md:gap-8 ">
 						<div className="flex flex-col group items-center w-full">
-							<Astronaut className="dark:invert w-3/4 h-4/3"></Astronaut>
+							<Astronaut className="dark:invert w-3/4 h-4/3" />
 							<div className="md:-mt-32">
 								<p className="dark:text-zinc-400 text-black mt-8 dark:max-md:text-white dark:group-hover:text-white text-black text-base font-bold text-center transition duration-700 ease-in">
 									他山之石

@@ -1,7 +1,7 @@
 import "../global.css";
 import { Metadata } from "next";
 import { Analytics } from "./components/analytics";
-import { Providers } from './providers'
+import { Providers } from "./providers";
 export const metadata: Metadata = {
 	title: {
 		default: "他山之石",
@@ -39,13 +39,11 @@ export const metadata: Metadata = {
 	},
 };
 
-
 export default function RootLayout({
 	children,
 }: {
 	children: React.ReactNode;
 }) {
-
 	return (
 		<html lang="zh-CN" suppressHydrationWarning>
 			<head>

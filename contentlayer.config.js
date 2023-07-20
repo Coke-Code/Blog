@@ -73,9 +73,9 @@ export const Project = defineDocumentType(() => ({
 			required: false,
 			default: true,
 		},
-		ad:{
+		ad: {
 			type: "string",
-		}
+		},
 	},
 	computedFields,
 }));

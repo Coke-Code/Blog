@@ -52,7 +52,7 @@ export default async function PostPage({ params }: Props) {
 				<Mdx code={project.body.code} />
 			</article>
 			<Toc project={project} />
-			<Ad project={project}/>
+			<Ad project={project} />
 		</div>
 	);
 }

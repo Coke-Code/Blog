@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useRef, useEffect, useState, useMemo, useCallback } from "react";
+import React, {
+	useRef,
+	useEffect,
+	useState,
+	useMemo,
+	useCallback,
+} from "react";
 import { useMousePosition } from "@/util/mouse";
 import { useTheme } from "next-themes";
 import { watch } from "fs";
@@ -39,7 +45,8 @@ export default function Particles({
 
 		return () => {
 			window.removeEventListener("resize", initCanvas);
-			requestAnimationFrameRef.current && clearTimeout(requestAnimationFrameRef.current);
+			requestAnimationFrameRef.current &&
+				clearTimeout(requestAnimationFrameRef.current);
 		};
 	}, [theme]);
 
@@ -117,32 +124,36 @@ export default function Particles({
 		};
 	};
 
-
 	const rgb = useMemo(() => {
-			if(theme === 'system'){
-			const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
-			return isDarkMode ? "255,255,255" : "0,0,0"
-		}else{
-			return theme === 'dark' ? "255,255,255" : "0,0,0"
+		if (theme === "system") {
+			const isDarkMode = window.matchMedia(
+				"(prefers-color-scheme: dark)",
+			).matches;
+			return isDarkMode ? "255,255,255" : "0,0,0";
+		} else {
+			return theme === "dark" ? "255,255,255" : "0,0,0";
 		}
 	}, [theme]);
 
-	const drawCircle = useCallback((circle: Circle, update = false) => {
-		console.error(rgb)
-		if (context.current) {
-			const { x, y, translateX, translateY, size, alpha } = circle;
-			context.current.translate(translateX, translateY);
-			context.current.beginPath();
-			context.current.arc(x, y, size, 0, 2 * Math.PI);
-			context.current.fillStyle = `rgba(${rgb}, ${alpha})`;
-			context.current.fill();
-			context.current.setTransform(dpr, 0, 0, dpr, 0, 0);
+	const drawCircle = useCallback(
+		(circle: Circle, update = false) => {
+			console.error(rgb);
+			if (context.current) {
+				const { x, y, translateX, translateY, size, alpha } = circle;
+				context.current.translate(translateX, translateY);
+				context.current.beginPath();
+				context.current.arc(x, y, size, 0, 2 * Math.PI);
+				context.current.fillStyle = `rgba(${rgb}, ${alpha})`;
+				context.current.fill();
+				context.current.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-			if (!update) {
-				circles.current.push(circle);
+				if (!update) {
+					circles.current.push(circle);
+				}
 			}
-		}
-	},[rgb])
+		},
+		[rgb],
+	);
 
 	const clearContext = () => {
 		if (context.current) {
@@ -176,7 +187,7 @@ export default function Particles({
 		return remapped > 0 ? remapped : 0;
 	};
 
-	const animate =  useCallback(() =>{
+	const animate = useCallback(() => {
 		clearContext();
 		circles.current.forEach((circle: Circle, i: number) => {
 			// Handle the alpha value
@@ -213,7 +224,6 @@ export default function Particles({
 				circle.y < -circle.size ||
 				circle.y > canvasSize.current.h + circle.size
 			) {
-
 				// remove the circle from the array
 				circles.current.splice(i, 1);
 				// create a new circle
@@ -235,7 +245,7 @@ export default function Particles({
 			}
 		});
 		requestAnimationFrameRef.current = window.requestAnimationFrame(animate);
-	},[drawCircle]);
+	}, [drawCircle]);
 
 	return (
 		<div className={className} ref={canvasContainerRef} aria-hidden="true">

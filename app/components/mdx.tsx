@@ -73,18 +73,36 @@ const components = {
 	),
 	p: ({ className, ...props }) => (
 		<p
-			className={clsx("leading-7 dark:text-slate-200 text-zinc-800 [&:not(:first-child)]:mt-6", className)}
+			className={clsx(
+				"leading-7 dark:text-slate-200 text-zinc-800 [&:not(:first-child)]:mt-6",
+				className,
+			)}
 			{...props}
 		/>
 	),
 	ul: ({ className, ...props }) => (
-		<ul className={clsx("my-6 ml-6 dark:text-slate-200 text-zinc-800 list-disc", className)} {...props} />
+		<ul
+			className={clsx(
+				"my-6 ml-6 dark:text-slate-200 text-zinc-800 list-disc",
+				className,
+			)}
+			{...props}
+		/>
 	),
 	ol: ({ className, ...props }) => (
-		<ol className={clsx("my-6 ml-6 dark:text-slate-200 text-zinc-800 list-decimal", className)} {...props} />
+		<ol
+			className={clsx(
+				"my-6 ml-6 dark:text-slate-200 text-zinc-800 list-decimal",
+				className,
+			)}
+			{...props}
+		/>
 	),
 	li: ({ className, ...props }) => (
-		<li className={clsx("mt-2 dark:text-slate-100 text-zinc-800", className)} {...props} />
+		<li
+			className={clsx("mt-2 dark:text-slate-100 text-zinc-800", className)}
+			{...props}
+		/>
 	),
 	blockquote: ({ className, ...props }) => (
 		<blockquote

@@ -2,7 +2,7 @@
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
-import Theme  from "./theme";
+import Theme from "./theme";
 export const Navigation: React.FC = () => {
 	const ref = useRef<HTMLElement>(null);
 	const [isIntersecting, setIntersecting] = useState(true);
@@ -46,7 +46,7 @@ export const Navigation: React.FC = () => {
 						>
 							联系
 						</Link>
-						<Theme iconSize={20}></Theme>
+						<Theme iconSize={20} />
 					</div>
 
 					<Link

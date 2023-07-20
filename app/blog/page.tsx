@@ -50,7 +50,9 @@ export default async function ProjectsPage() {
 					<h2 className="text-3xl font-bold tracking-tight dark:text-zinc-100 tex-zinc-800 sm:text-4xl">
 						博客
 					</h2>
-					<p className="mt-4 dark:text-zinc-400 text-zinc-600">一些细细碎碎。</p>
+					<p className="mt-4 dark:text-zinc-400 text-zinc-600">
+						一些细细碎碎。
+					</p>
 				</div>
 				<div className="w-full h-px dark:bg-zinc-800 bg-zinc-200" />
 

@@ -2,7 +2,7 @@
 import { ArrowLeft, Clock, Eye, Github, Twitter } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
-import Theme  from "../../components/theme";
+import Theme from "../../components/theme";
 type Props = {
 	project: {
 		url?: string;
@@ -80,7 +80,7 @@ export const Header: React.FC<Props> = ({ project, views }) => {
 								} `}
 							/>
 						</Link>
-						<Theme></Theme>
+						<Theme />
 					</div>
 
 					<Link

@@ -1,29 +1,23 @@
 import Image from "next/image";
 import { Metadata } from "next";
 import { Navigation } from "../components/nav";
-import { Card } from "../components/card";
+import Astronaut from "../components/astronaut";
 
 export const metadata: Metadata = {
 	title: "关于他山之石",
 	description: "脚踏实地是人生常态",
 };
 
-export default function Example() {
+export default function about() {
 	return (
 		<div className=" bg-gradient-to-tl dark:from-zinc-900/0 dark:via-zinc-900 dark:to-zinc-900/0 from-slate-50 via-slate-200/10 to-slate-50">
 			<Navigation />
 			<div className="container flex items-center justify-center min-h-screen px-4 mx-auto">
-				<div className="grid grid-cols-1 gap-8 mx-auto mt-32 sm:mt-0 lg:gap-16">
-					<div className="p-4 relative flex flex-col items-center gap-4 md:gap-8 md:py-24  lg:pb-48  md:p-16">
-						<div className="flex flex-col group items-center">
-							<Image
-								src={"/wissbell.svg"}
-								alt="avatar"
-								width="100"
-								height="100"
-								className="h-16 w-16 md:h-24 md:w-24  rounded-full  dark:invert-50 dark:group-hover:invert transition duration-1000 ease-in"
-							/>
-							<div>
+				<div className="grid grid-cols-1 gap-8 mx-auto sm:mt-0 lg:gap-16">
+					<div className="relative flex flex-col items-center gap-4 md:gap-8 ">
+						<div className="flex flex-col group items-center w-full">
+							<Astronaut className="dark:invert w-3/4 h-4/3"></Astronaut>
+							<div className="md:-mt-32">
 								<p className="dark:text-zinc-400 text-black mt-8 dark:max-md:text-white dark:group-hover:text-white text-black text-base font-bold text-center transition duration-700 ease-in">
 									他山之石
 								</p>
@@ -36,7 +30,7 @@ export default function Example() {
 								<p>深圳</p>
 							</div>
 						</div>
-						<div className="flex max-w-3xl mt-12 md:mt-4 items-baseline gap-y-8 flex-col md:flex-row">
+						{/* <div className="flex max-w-3xl mt-12 md:mt-4 items-baseline gap-y-8 flex-col md:flex-row">
 							<h2
 								id=":r6:"
 								className="text-sm dark:text-zinc-400 w-full flex-1 md:basis-1/4 font-semibold text-zinc-700 text-center md:text-left"
@@ -151,7 +145,7 @@ export default function Example() {
 									</article>
 								</div>
 							</div>
-						</div>
+						</div> */}
 					</div>
 				</div>
 			</div>

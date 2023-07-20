@@ -1,4 +1,4 @@
-import { Github, Mail, Twitter } from "lucide-react";
+import { Github, Mail, Satellite } from "lucide-react";
 import Link from "next/link";
 import { Metadata } from "next";
 import { Navigation } from "../components/nav";
@@ -16,6 +16,12 @@ const socials = [
 		href: "https://github.com/Coke-Code",
 		label: "Github",
 		handle: "Coke-Code",
+	},
+	{
+		icon: <Satellite size={20} />,
+		href: "",
+		label: "Wechat",
+		handle: "wissbell",
 	},
 ];
 

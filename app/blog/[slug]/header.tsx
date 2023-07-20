@@ -87,7 +87,7 @@ export const Header: React.FC<Props> = ({ project, views }) => {
 						href="/blog"
 						className={`duration-200 hover:font-medium ${
 							isIntersecting
-								? " dark:text-zinc-400 dark:hover:text-black tex-slate-200 hover:text-white"
+								? " dark:text-zinc-400 dark:hover:text-black text-slate-200 hover:text-white"
 								: "dark:tex-slate-100 dark:hover:text-white text-zinc-600 hover:text-zinc-200"
 						} `}
 					>

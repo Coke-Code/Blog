@@ -84,7 +84,7 @@ export default async function ProjectsPage() {
 								>
 									{featured.title}
 								</h2>
-								<p className="mt-4 leading-8 duration-150 :text-zinc-400 tex-zinc-500 group-hover:text-zinc-600  dark:group-hover:text-zinc-300">
+								<p className="mt-4 leading-8 dark:duration-150 :text-zinc-400 tex-zinc-500 group-hover:text-zinc-600  dark:group-hover:text-zinc-300">
 									{featured.description}
 								</p>
 								<div className="flex items-center justify-start mt-4">

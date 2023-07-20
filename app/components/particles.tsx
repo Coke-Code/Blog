@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useMemo, useCallback } from "react";
 import { useMousePosition } from "@/util/mouse";
-
+import { useTheme } from "next-themes";
 interface ParticlesProps {
 	className?: string;
 	quantity?: number;
@@ -26,7 +26,7 @@ export default function Particles({
 	const mouse = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 	const canvasSize = useRef<{ w: number; h: number }>({ w: 0, h: 0 });
 	const dpr = typeof window !== "undefined" ? window.devicePixelRatio : 1;
-
+	const { theme } = useTheme();
 	useEffect(() => {
 		if (canvasRef.current) {
 			context.current = canvasRef.current.getContext("2d");
@@ -118,13 +118,24 @@ export default function Particles({
 		};
 	};
 
-	const drawCircle = (circle: Circle, update = false) => {
+
+	const rgb = useMemo(() => {
+			if(theme === 'system'){
+			const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+			return isDarkMode ? "255,255,255" : "0,0,0"
+		}else{
+			return theme === 'dark' ? "255,255,255" : "0,0,0"
+		}
+	}, [theme]);
+
+	const drawCircle = useCallback((circle: Circle, update = false) => {
+		console.log(rgb)
 		if (context.current) {
 			const { x, y, translateX, translateY, size, alpha } = circle;
 			context.current.translate(translateX, translateY);
 			context.current.beginPath();
 			context.current.arc(x, y, size, 0, 2 * Math.PI);
-			context.current.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+			context.current.fillStyle = `rgba(${rgb}, ${alpha})`;
 			context.current.fill();
 			context.current.setTransform(dpr, 0, 0, dpr, 0, 0);
 
@@ -132,7 +143,7 @@ export default function Particles({
 				circles.current.push(circle);
 			}
 		}
-	};
+	},[rgb])
 
 	const clearContext = () => {
 		if (context.current) {
@@ -166,7 +177,7 @@ export default function Particles({
 		return remapped > 0 ? remapped : 0;
 	};
 
-	const animate = () => {
+	const animate =  useCallback(() =>{
 		clearContext();
 		circles.current.forEach((circle: Circle, i: number) => {
 			// Handle the alpha value
@@ -224,7 +235,7 @@ export default function Particles({
 			}
 		});
 		window.requestAnimationFrame(animate);
-	};
+	},[drawCircle]);
 
 	return (
 		<div className={className} ref={canvasContainerRef} aria-hidden="true">

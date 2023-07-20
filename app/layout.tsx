@@ -2,6 +2,7 @@ import "../global.css";
 import LocalFont from "@next/font/local";
 import { Metadata } from "next";
 import { Analytics } from "./components/analytics";
+import { Providers } from './providers'
 export const metadata: Metadata = {
 	title: {
 		default: "他山之石",
@@ -49,17 +50,18 @@ export default function RootLayout({
 }: {
 	children: React.ReactNode;
 }) {
+
 	return (
-		<html lang="zh-CN" className={[calSans.variable].join(" ")}>
+		<html lang="zh-CN" className={[calSans.variable].join(" ")} suppressHydrationWarning>
 			<head>
 				<Analytics />
 			</head>
 			<body
-				className={`bg-black ${
+				className={` ${
 					process.env.NODE_ENV === "development" ? "debug-screens" : undefined
 				}`}
 			>
-				{children}
+				<Providers>{children}</Providers>
 			</body>
 		</html>
 	);

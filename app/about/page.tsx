@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function Example() {
 	return (
-		<div className=" bg-gradient-to-tl from-zinc-900/0 via-zinc-900 to-zinc-900/0">
+		<div className=" bg-gradient-to-tl dark:from-zinc-900/0 dark:via-zinc-900 dark:to-zinc-900/0 from-slate-50 via-slate-200/10 to-slate-50">
 			<Navigation />
 			<div className="container flex items-center justify-center min-h-screen px-4 mx-auto">
 				<div className="grid grid-cols-1 gap-8 mx-auto mt-32 sm:mt-0 lg:gap-16">
@@ -21,7 +21,7 @@ export default function Example() {
 								alt="avatar"
 								width="100"
 								height="100"
-								className="h-16 w-16 md:h-24 md:w-24 max-md:invert rounded-full invert-50 group-hover:invert transition duration-1000 ease-in"
+								className="h-16 w-16 md:h-24 md:w-24  rounded-full dark:invert invert group-hover:invert dark:group-hover:invert transition duration-1000 ease-in"
 							/>
 							<div>
 								<p className="text-zinc-500 mt-8 max-md:text-white group-hover:text-white text-sm text-center transition duration-700 ease-in">

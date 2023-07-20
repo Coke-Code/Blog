@@ -43,7 +43,7 @@ export const Header: React.FC<Props> = ({ project, views }) => {
 	return (
 		<header
 			ref={ref}
-			className="relative isolate overflow-hidden bg-gradient-to-tl from-black via-zinc-900 to-black"
+			className="relative isolate overflow-hidden bg-gradient-to-tl dark:from-black dark:via-zinc-900 dark:to-black from-white via-slate-100 to-white"
 		>
 			<div
 				className={`fixed inset-x-0 top-0 z-50 backdrop-blur lg:backdrop-blur-none duration-200 border-b lg:bg-transparent ${
@@ -82,8 +82,8 @@ export const Header: React.FC<Props> = ({ project, views }) => {
 						href="/blog"
 						className={`duration-200 hover:font-medium ${
 							isIntersecting
-								? " text-zinc-400 hover:text-zinc-100"
-								: "text-zinc-600 hover:text-zinc-900"
+								? " dark:text-zinc-400 dark:hover:text-zinc-100 tex-zinc-500 hover:text-zinc-800"
+								: "dark:text-zinc-600 dark:hover:text-zinc-900 text-zinc-600 hover:text-zinc-200"
 						} `}
 					>
 						<ArrowLeft className="w-6 h-6 " />
@@ -93,10 +93,10 @@ export const Header: React.FC<Props> = ({ project, views }) => {
 			<div className="container mx-auto relative isolate overflow-hidden  py-24 sm:py-32">
 				<div className="mx-auto max-w-7xl px-6 lg:px-8 text-center flex flex-col items-center">
 					<div className="mx-auto max-w-2xl lg:mx-0">
-						<h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl font-display">
+						<h1 className="text-4xl font-bold tracking-tight dark:text-white text-black sm:text-6xl font-display">
 							{project.title}
 						</h1>
-						<p className="mt-6 text-lg leading-8 text-zinc-300">
+						<p className="mt-6 text-lg leading-8 dark:text-zinc-300 text-slate-300">
 							{project.description}
 						</p>
 					</div>

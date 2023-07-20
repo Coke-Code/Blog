@@ -20,7 +20,7 @@ const components = {
 	h2: ({ className, ...props }) => (
 		<h2
 			className={clsx(
-				"mt-10 scroll-m-20 border-b border-b-zinc-800 pb-1 text-3xl font-semibold tracking-tight first:mt-0",
+				"mt-10 scroll-m-20 border-b border-b-zinc-800 pb-1 text-3xl font-semibold tracking-tight first:mt-0 text-slate-100 dark:text-zinc-800",
 				className,
 			)}
 			{...props}
@@ -29,7 +29,7 @@ const components = {
 	h3: ({ className, ...props }) => (
 		<h3
 			className={clsx(
-				"mt-8 scroll-m-20 text-2xl font-semibold tracking-tight",
+				"mt-8 scroll-m-20 text-2xl font-semibold tracking-tight text-slate-100 dark:text-zinc-800",
 				className,
 			)}
 			{...props}
@@ -73,23 +73,23 @@ const components = {
 	),
 	p: ({ className, ...props }) => (
 		<p
-			className={clsx("leading-7 [&:not(:first-child)]:mt-6", className)}
+			className={clsx("leading-7 text-slate-200 dark:text-zinc-800 [&:not(:first-child)]:mt-6", className)}
 			{...props}
 		/>
 	),
 	ul: ({ className, ...props }) => (
-		<ul className={clsx("my-6 ml-6 list-disc", className)} {...props} />
+		<ul className={clsx("my-6 ml-6 text-slate-200 dark:text-zinc-800 list-disc", className)} {...props} />
 	),
 	ol: ({ className, ...props }) => (
-		<ol className={clsx("my-6 ml-6 list-decimal", className)} {...props} />
+		<ol className={clsx("my-6 ml-6 text-slate-200 dark:text-zinc-800 list-decimal", className)} {...props} />
 	),
 	li: ({ className, ...props }) => (
-		<li className={clsx("mt-2", className)} {...props} />
+		<li className={clsx("mt-2 text-slate-100 dark:text-zinc-800", className)} {...props} />
 	),
 	blockquote: ({ className, ...props }) => (
 		<blockquote
 			className={clsx(
-				"mt-6 border-l-2 border-zinc-300 pl-6 italic text-zinc-800 [&>*]:text-zinc-600",
+				"mt-6 border-l-2 border-zinc-300 pl-6 italic dark:text-zinc-800 dark:[&>*]:text-zinc-600 text-slate-200 [&>*]:text-zinc-400",
 				className,
 			)}
 			{...props}
@@ -145,7 +145,7 @@ const components = {
 	pre: ({ className, ...props }) => (
 		<pre
 			className={clsx(
-				"mt-6 mb-4 overflow-x-auto rounded-lg bg-zinc-900 py-4",
+				"mt-6 mb-4 overflow-x-auto rounded-lg dark:bg-zinc-900 bg-slate-900 py-4",
 				className,
 			)}
 			{...props}
@@ -154,7 +154,7 @@ const components = {
 	code: ({ className, ...props }) => (
 		<code
 			className={clsx(
-				"relative rounded border bg-zinc-300 bg-opacity-25 py-[0.2rem] px-[0.3rem] font-mono text-sm text-zinc-600",
+				"relative rounded border dark:bg-zinc-300 border-slate-200 bg-opacity-25 py-[0.2rem] px-[0.3rem] font-mono text-sm dark:text-zinc-600 text-white",
 				className,
 			)}
 			{...props}

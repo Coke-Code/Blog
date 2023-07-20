@@ -25,7 +25,7 @@ export const metadata: Metadata = {
 };
 export default function Example() {
 	return (
-		<div className=" bg-gradient-to-tl from-zinc-900/0 via-zinc-900 to-zinc-900/0">
+		<div className=" bg-gradient-to-tl dark:from-zinc-900/0 dark:via-zinc-900 dark:to-zinc-900/0 from-slate-50/0 via-slate-100 to-slate-50/0">
 			<Navigation />
 			<div className="container flex items-center justify-center min-h-screen px-4 mx-auto">
 				<div className="grid w-full grid-cols-1 gap-8 mx-auto mt-8 md:mt-32 sm:mt-0 sm:grid-cols-3 lg:gap-16">
@@ -44,10 +44,10 @@ export default function Example() {
 									{s.icon}
 								</span>{" "}
 								<div className="z-10 flex flex-col items-center">
-									<span className="text-xl font-medium duration-150 lg:text-3xl text-zinc-200 group-hover:text-white font-display">
+									<span className="text-xl font-medium duration-150 lg:text-3xl dark:text-zinc-200 text-zinc-700 dark:group-hover:text-white group-hover:text-black font-display">
 										{s.handle}
 									</span>
-									<span className="mt-4 text-sm text-center duration-1000 text-zinc-400 group-hover:text-zinc-200">
+									<span className="mt-4 text-sm text-center duration-1000 text-zinc-400 dark:group-hover:text-zinc-200 group-hover:text-zinc-600">
 										{s.label}
 									</span>
 								</div>

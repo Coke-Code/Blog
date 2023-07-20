@@ -3,6 +3,7 @@
 import React, { useRef, useEffect, useState, useMemo, useCallback } from "react";
 import { useMousePosition } from "@/util/mouse";
 import { useTheme } from "next-themes";
+import { watch } from "fs";
 interface ParticlesProps {
 	className?: string;
 	quantity?: number;
@@ -26,6 +27,7 @@ export default function Particles({
 	const mouse = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 	const canvasSize = useRef<{ w: number; h: number }>({ w: 0, h: 0 });
 	const dpr = typeof window !== "undefined" ? window.devicePixelRatio : 1;
+	const requestAnimationFrameRef = useRef<number | null>(null);
 	const { theme } = useTheme();
 	useEffect(() => {
 		if (canvasRef.current) {
@@ -37,16 +39,13 @@ export default function Particles({
 
 		return () => {
 			window.removeEventListener("resize", initCanvas);
+			requestAnimationFrameRef.current && clearTimeout(requestAnimationFrameRef.current);
 		};
-	}, []);
+	}, [theme]);
 
 	useEffect(() => {
 		onMouseMove();
 	}, [mousePosition.x, mousePosition.y]);
-
-	useEffect(() => {
-		initCanvas();
-	}, [refresh]);
 
 	const initCanvas = () => {
 		resizeCanvas();
@@ -129,7 +128,7 @@ export default function Particles({
 	}, [theme]);
 
 	const drawCircle = useCallback((circle: Circle, update = false) => {
-		console.log(rgb)
+		console.error(rgb)
 		if (context.current) {
 			const { x, y, translateX, translateY, size, alpha } = circle;
 			context.current.translate(translateX, translateY);
@@ -214,6 +213,7 @@ export default function Particles({
 				circle.y < -circle.size ||
 				circle.y > canvasSize.current.h + circle.size
 			) {
+
 				// remove the circle from the array
 				circles.current.splice(i, 1);
 				// create a new circle
@@ -234,7 +234,7 @@ export default function Particles({
 				);
 			}
 		});
-		window.requestAnimationFrame(animate);
+		requestAnimationFrameRef.current = window.requestAnimationFrame(animate);
 	},[drawCircle]);
 
 	return (

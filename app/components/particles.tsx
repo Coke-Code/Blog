@@ -28,13 +28,35 @@ export default function Particles({
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const canvasContainerRef = useRef<HTMLDivElement>(null);
 	const context = useRef<CanvasRenderingContext2D | null>(null);
-	const circles = useRef<any[]>([]);
+	const circles = useRef<Circle[]>([]);
 	const mousePosition = useMousePosition();
 	const mouse = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 	const canvasSize = useRef<{ w: number; h: number }>({ w: 0, h: 0 });
 	const dpr = typeof window !== "undefined" ? window.devicePixelRatio : 1;
 	const requestAnimationFrameRef = useRef<number | null>(null);
 	const { theme } = useTheme();
+	const systemMode = useRef<string>();
+	const rgb = useMemo(() => {
+		if (theme === "system") {
+			const isDarkMode = window.matchMedia(
+				"(prefers-color-scheme: dark)",
+			).matches;
+			return isDarkMode ? "255,255,255" : "0,0,0";
+		} else {
+			return theme === "dark" ? "255,255,255" : "0,0,0";
+		}
+	}, [theme, systemMode.current]);
+
+	useEffect(() => {
+		const mode = window.matchMedia("(prefers-color-scheme: dark)");
+		const setSystemMode = (val: { matches: boolean }) => {
+			systemMode.current = val.matches ? "dark" : "light";
+		};
+		mode.addEventListener("change", setSystemMode);
+		return () => {
+			mode.removeEventListener("change", setSystemMode);
+		};
+	}, []);
 	useEffect(() => {
 		if (canvasRef.current) {
 			context.current = canvasRef.current.getContext("2d");
@@ -42,13 +64,12 @@ export default function Particles({
 		initCanvas();
 		animate();
 		window.addEventListener("resize", initCanvas);
-
 		return () => {
 			window.removeEventListener("resize", initCanvas);
 			requestAnimationFrameRef.current &&
 				clearTimeout(requestAnimationFrameRef.current);
 		};
-	}, [theme]);
+	}, [rgb]);
 
 	useEffect(() => {
 		onMouseMove();
@@ -124,20 +145,8 @@ export default function Particles({
 		};
 	};
 
-	const rgb = useMemo(() => {
-		if (theme === "system") {
-			const isDarkMode = window.matchMedia(
-				"(prefers-color-scheme: dark)",
-			).matches;
-			return isDarkMode ? "255,255,255" : "0,0,0";
-		} else {
-			return theme === "dark" ? "255,255,255" : "0,0,0";
-		}
-	}, [theme]);
-
 	const drawCircle = useCallback(
 		(circle: Circle, update = false) => {
-			console.error(rgb);
 			if (context.current) {
 				const { x, y, translateX, translateY, size, alpha } = circle;
 				context.current.translate(translateX, translateY);

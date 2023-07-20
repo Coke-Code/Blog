@@ -39,7 +39,7 @@ export default function Theme(props:ThemeProps) {
     }
   }
   return (
-    <div className="relative">
+    <div className="relative flex items-center">
       <a type="button" onClick={()=>setShowTheme(!showTheme)} aria-expanded="true" aria-haspopup="true" className="text-sm duration-500 text-zinc-500 hover:text-zinc-300"><ModeIcon></ModeIcon></a>
       {showTheme && <ul className="absolute text-sm duration-500  z-150 top-full left-1/2 -translate-x-1/2  dark:bg-black bg-white border dark:border-zinc-800 border-zinc-200 rounded-lg ring-1 ring-slate-900/10 shadow-lg overflow-hidden w-36 py-1 text-sm text-slate-700 font-semibold dark:bg-slate-800 dark:ring-0 dark:highlight-white/5 dark:text-slate-300 mt-8" aria-orientation="vertical" role="listbox">
         <li onClick={()=>handleSwitchTheme('light')} role="option" className="text-zinc-500 hover:text-zinc-300 py-1 px-2 flex items-center cursor-pointer">

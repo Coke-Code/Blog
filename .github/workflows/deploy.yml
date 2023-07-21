@@ -25,7 +25,7 @@ jobs:
         connect_timeout: 10s
         first_ssh: |
           cd Blog
-          git pull
+          git fetch --all && git reset --hard origin/master && git pull
           rm -rf .next
           rm -rf .contentlayer
           rm -rf public/sitemap-0.xml

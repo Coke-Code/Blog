@@ -3,6 +3,7 @@ import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useMDXComponent } from "next-contentlayer/hooks";
+import Preview from "./previewer";
 
 function clsx(...args) {
 	return args.filter(Boolean).join(" ");
@@ -120,7 +121,7 @@ const components = {
 	}: React.ImgHTMLAttributes<HTMLImageElement>) => (
 		// eslint-disable-next-line @next/next/no-img-element
 		<img
-			className={clsx("rounded-md border border-zinc-200", className)}
+			className={clsx("viewer-item rounded-md border border-zinc-200", className)}
 			alt={alt}
 			{...props}
 		/>
@@ -187,9 +188,9 @@ interface MdxProps {
 
 export function Mdx({ code }: MdxProps) {
 	const Component = useMDXComponent(code);
-
 	return (
-		<div className="mdx">
+		<div className="mdx gallery">
+			<Preview></Preview>
 			<Component components={components} />
 		</div>
 	);

@@ -4,6 +4,7 @@ description: '利用Github Action打包部署前端项目，甚至是执行服�
 date: '2023-06-19'
 hot: false
 published: true
+toc: true
 ---
 
 ## 简介
@@ -11,15 +12,177 @@ published: true
 `Jenkins`、`Team city`、`Travis CI`、`Circle CI`、`Gitlab CI`等等都是很优秀的自动化方案，但是绝大多数都需要自己搭建服务器，繁琐的配置或者昂贵的价格。
 今天聊一下依托于`Github`仓库的自动化方案`Github Actions`。
 ## 场景
+笔者的场景比较简单。当博客代码更新以后，我希望能够自动打包部署到服务器上。这里用到了`Github Actions`的`workflow`功能。
 ## Workflow
 ### 基本配置
-### 环境及变量
-#### 配置环境变量
-#### 配置Secrets
+`Github Action`工作流采用`YMAL`语法，配置文件名为`[name].yml`，放在`.github/workflows`目录下。
+例如想监听当前仓库的`push`事件，且指定`master`分支，可以这样配置：
+```yaml
+name: CI
+on:
+  push:
+    branches:
+      - master
+```
+在一个监听事件下，我们可以定义多个`jobs`。
+#### on
+`on`是`Github Action`的触发器，可以监听多种事件，例如`push`、`pull_request`、`release`等等。
+#### jobs
+`jobs`是`Github Action`的执行器，可以配置多个`job`，每个`job`可以配置多个`step`。
+```yaml
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install
+        run: npm install
+      - name: Build
+        run: npm run build
+```
+#### runs-on
+`runs-on`是`Github Action`的执行环境，可以配置多种环境，例如`ubuntu-latest`、`windows-latest`、`macos-latest`等等。
+#### steps
+`steps`是`Github Action`的执行步骤，可以配置多个`step`，每个`step`可以配置多个`run`。
+#### uses
+`uses`是`Github Action`的执行器，可以配置多种执行器，例如`actions/checkout@v2`、`actions/setup-node@v1`、`actions/upload-artifact@v2`等等。
+
+### 项目实践
+下面介绍一下`wissbell.com`的`Github Action`自动化部署方案。
+#### 环境及变量
+1. 在项目仓库左上角点击`Settings`，进入`Settings`页面。
+![创建环境变量](https://static.wissbell.com/wissbell/images/github-action-step1.png?imageMogr2/format/webp)
+2. 在`Settings`页面左侧菜单栏点击`Enviroments`，进入`Enviroments`页面。
+![创建环境变量](https://static.wissbell.com/wissbell/images/github-action-step2.png?imageMogr2/format/webp)
+3. 在`Enviroments`页面点击`New environment`，创建一个新的环境。
+![创建环境变量](https://static.wissbell.com/wissbell/images/github-action-step3.png?imageMogr2/format/webp)
+4. 在`Enviroments`页面点击`Add secret`，创建一个新的环境变量。
+![创建环境变量](https://static.wissbell.com/wissbell/images/github-action-step4.png?imageMogr2/format/webp)
+5. 完成上述步骤后，得到如图所示的环境变量。
+![创建环境变量](https://static.wissbell.com/wissbell/images/github-action-step5.png?imageMogr2/format/webp)
+#### 配置文件
+在`.github/workflows`目录下创建`deploy.yml`文件，配置如下：
+```yaml
+name: Deploy
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: Deploy
+        uses: easingthemes/ssh-deploy@v2.1.5
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ARGS: "-rltgoDzvO --delete"
+          SOURCE: "dist/"
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          TARGET: ${{ secrets.TARGET }}
+```
+#### 网络问题
+##### 代理
+如果主机在国外，上面的配置很完美。工作结束
+
+但是如果主机在国内，由于`Github`的网络问题，会导致`Github Action`执行失败。这时候需要配置`Github Action`的代理。
+```yaml
+name: Deploy
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Install
+        run: npm install
+      - name: Build
+        run: npm run build
+      - name: Deploy
+        uses: easingthemes/ssh-deploy@v2.1.5
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ARGS: "-rltgoDzvO --delete"
+          SOURCE: "dist/"
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          TARGET: ${{ secrets.TARGET }}
+        env:
+          HTTP_PROXY: ${{ secrets.HTTP_PROXY }}
+          HTTPS_PROXY: ${{ secrets.HTTPS_PROXY }}
+```
+##### Hack
+如果代理需要代理配置和Money，经济适用前端开发只能用`Hack`的方式了。
+
+思路：
+1. 使用`Gitee`作为中转站，将`Github`的代码同步到`Gitee`。
+2. 拉取`Gitee`仓库代码作为本地代码，修改代码时自动推送到`Github`（需要在`Gitee`配置）
+3. `Github Action`中使用`SSH`执行命令，打包部署交给自己的服务器。
+
+具体的配置如下：
+```yaml
+name: Deploy to Tencent
+on:
+  push:
+    branches:
+      - main
+jobs:
+  # 任务ID
+  build:
+    # 运行环境
+    runs-on: ubuntu-latest
+    environment: prod
+    # 步骤
+    steps:
+    - name: Deploy
+      # 支持拷贝和SSH，因为服务器在中国。因此使用SSH + GIT
+      uses: cross-the-world/ssh-scp-ssh-pipelines@v1.1.4
+      env:
+        WELCOME: "ssh scp ssh pipelines"
+        LASTSSH: "Doing something after copying"
+      with:
+        host: ${{ secrets.USER_HOST }}
+        user: ${{ secrets.USER_NAME }}
+        pass: ${{ secrets.USER_PASS }}
+        port: 22
+        connect_timeout: 10s
+        first_ssh: |
+          cd Blog
+          git pull
+          rm -rf .next
+          rm -rf .contentlayer
+          rm -rf package-lock.json
+          rm -rf public/sitemap-0.xml
+          npm i
+          npm run build
+        last_ssh: |
+          pm2 restart wissbell 
+
+```
+其中的密钥相关的使用的是`environment`中配置的`prod`环境。 具体的`SSH`脚本可以根据自己的需求更改。
 ### 官方市场
-## 前端实践
-## 代码风格统一化
-## 代码审计与测试
-## 代码打包部署
-## 服务器脚本执行
+除了上述代码中用到的`easingthemes/ssh-deploy@v2.1.5`、`cross-the-world/ssh-scp-ssh-pipelines@v1.1.4`，`Github Action`还有很多官方市场的`Action`可以使用。
+
+利用官方的脚本可以做到很多事情，例如：
+1. 代理
+2. SSH
+3. FTP
+
+更多的`Action`可以在[官方市场](https://github.com/marketplace?type=action)中查看。
 ## 坑点
+网络问题是最大的坑点，如果网络不好，`Github Action`会执行失败。这时候需要多次尝试，或者使用代理。

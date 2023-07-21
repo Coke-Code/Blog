@@ -1,8 +1,9 @@
 "use client";
-import { type themeType } from "@/util/theme";
+
 import { useEffect, useState } from "react";
 import { Sun, Moon, Monitor } from "react-feather";
 import { useTheme } from "next-themes";
+export type themeType = "light" | "dark" | "system";
 type themeMap = {
 	[key in themeType]: string;
 };

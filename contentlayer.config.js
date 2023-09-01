@@ -26,9 +26,14 @@ const computedFields = {
 				({ groups }) => {
 					const flag = groups?.flag;
 					const content = groups?.content;
+					const levelMap = {
+						1: "one",
+						2: "two",
+						3: "three",
+						4: "four",
+					};
 					return {
-						level:
-							flag?.length === 1 ? "one" : flag?.length === 2 ? "two" : "three",
+						level: levelMap[flag?.length] || "one",
 						text: content,
 						slug: content ? slugger.slug(content) : undefined,
 					};

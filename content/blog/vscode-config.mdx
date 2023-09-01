@@ -51,13 +51,76 @@ published: true
 - wxml: 微信小程序 wxml 格式化以及高亮组件(高度自定义)
 - wxapp-helper: 自动生成配套的文件
 
+## 开发场景
+### 折叠文件
+当我们有很多环境变量，如`.env`、`.env.development`、`.env.production`等，进行如下配置，可以折叠文件，方便查看。
+```json
+"explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.expand": false,
+  "explorer.fileNesting.patterns": {
+    "*.env": "$(capture).env.*",
+  }
+```
+在`pattern`中可以定义自己的规则，上述配置会得到这样的效果：
+![环境变量折叠](https://static.wissbell.com/wissbell/images/visual-code-config1.png?imageMogr2/format/webp)
+### 搜索及文件监听
+如果项目比较大、涉及的文件比较多，搜索和修改文件等操作可能性能比较差。可以添加文件排除做一定的性能优化。
+#### 文件排除
+在`setting.json`中添加如下配置，可以排除不需要的文件，提高搜索性能。
+```json
+"search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/.vscode": true,
+    "**/.github": true,
+    "**/_output": true,
+    "**/*.min.*": true,
+    "**/*.map": true,
+    "**/.next": true
+  },
+```
+#### 监听排除
+在`setting.json`中添加如下配置，可以排除不需要的文件，提高监听性能。
+```json
+"files.watcherExclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/.vscode": true,
+    "**/.github": true,
+    "**/_output": true,
+    "**/*.min.*": true,
+    "**/*.map": true,
+    "**/.next": true
+  },
+```
+#### 推荐插件
+当别人拷贝一份项目副本时，也许你需要向他推荐一些`visaual code`插件。在项目目录下的`.vscode`文件夹下新建`extension.json`
+
+输入你想推荐的项目插件：
+```json
+{
+  "recommendations": [
+    "vue.volar",
+    "dbaeumer.vscode-eslint",
+    "stylelint.vscode-stylelint",
+    "esbenp.prettier-vscode",
+  ]
+}
+```
+
+当用户克隆副本并打开时（未设置关闭推荐）会得到如下消息：
+![推荐插件](https://static.wissbell.com/wissbell/images/visual-code-config2.png?imageMogr2/format/webp)
 ## 配置篇
 
 全局配置:file => preference => settings (快捷键 ctrl + ,)
 项目配置: 根目录创建`.vscode`文件夹，再创建`setting.json`文件
 优先级: vscode 会优先读取项目中的 ide 配置，在读全局的配置
 
-废话不多说，上我的配置
+
 笔者喜欢连体字体，因此使用了下列字体,如有需要自行下载。
 [Cascadia Code Light](https://github.com/microsoft/cascadia-code)
 
@@ -70,6 +133,7 @@ published: true
 
 **我们还可以设置配置同步，这样以后换电脑就不用再配置一次了。**
 
+以下是笔者的全局配置，可以根据喜好自行调整：
 ```json
 {
   "editor.suggestSelection": "first",
@@ -151,7 +215,6 @@ published: true
   "editor.minimap.renderCharacters": false,
   "breadcrumbs.enabled": true,
   "editor.formatOnPaste": true,
-  "eslint.alwaysShowStatus": true,
   "editor.fontLigatures": true,
   "editor.fontFamily": "'Cascadia Code Light', Consolas, 'Courier New', monospace",
   "editor.fontSize": 14,
@@ -195,7 +258,6 @@ published: true
     "!yaml",
     "!yml"
   ],
-  "eslint.packageManager": "yarn",
   "prettier.singleQuote": true,
   "prettier.semi": false,
   "prettier.requireConfig": false,
@@ -213,7 +275,7 @@ published: true
   "leetcode.workspaceFolder": "/Users/shiyuankun/Documents/epicShit.nosync/leetcode",
   "leetcode.hint.commandShortcut": false,
   "debug.allowBreakpointsEverywhere": true,
-  "cSpell.userWords": ["自定义单词"],
+  "cSpell.userWords": ["wiks"],
   "typescript.updateImportsOnFileMove.enabled": "always",
 
   "todohighlight.isEnable": true,
@@ -244,6 +306,7 @@ published: true
     "**/*.jsx",
     "**/*.ts",
     "**/*.tsx",
+    "**/*.vue",
     "**/*.html",
     "**/*.php",
     "**/*.css",
@@ -275,6 +338,21 @@ published: true
   "diffEditor.ignoreTrimWhitespace": false,
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "github.copilot.enable": {
+    "*": true,
+    "yaml": false,
+    "plaintext": false,
+    "markdown": true
+  },
+  "leetcode.endpoint": "leetcode-cn",
+  "workbench.colorTheme": "Default Dark Modern",
+  "auto-rename-tag.activationOnLanguage": ["*"],
+  "markdownlint.config": {
+    "MD028": false,
+    "MD033": false,
+    "MD051": false
   }
 }
+
 ```

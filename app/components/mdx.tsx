@@ -121,7 +121,10 @@ const components = {
 	}: React.ImgHTMLAttributes<HTMLImageElement>) => (
 		// eslint-disable-next-line @next/next/no-img-element
 		<img
-			className={clsx("viewer-item rounded-md border border-zinc-200", className)}
+			className={clsx(
+				"viewer-item rounded-md border border-zinc-200",
+				className,
+			)}
 			alt={alt}
 			{...props}
 		/>
@@ -190,7 +193,7 @@ export function Mdx({ code }: MdxProps) {
 	const Component = useMDXComponent(code);
 	return (
 		<div className="mdx gallery">
-			<Preview></Preview>
+			<Preview />
 			<Component components={components} />
 		</div>
 	);

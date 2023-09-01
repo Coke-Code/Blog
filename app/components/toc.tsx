@@ -61,7 +61,7 @@ export default function Toc({ project }: TocProps) {
 						return (
 							<div key={`#${heading.slug}`}>
 								<a
-									className="data-[level=two]:pl-2 data-[level=two]:text-base data-[level=three]:pl-4 data-[level=three]:text-sm dark:text-white text-black"
+									className="data-[level=two]:pl-2 data-[level=two]:text-base data-[level=three]:pl-4 data-[level=three]:text-sm data-[level=four]:pl-5 data-[level=four]:text-xs dark:text-white text-black"
 									data-level={heading.level}
 									href={heading.slug}
 								>
